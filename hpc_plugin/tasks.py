@@ -90,9 +90,14 @@ def configure_execution(
                 "' not supported.")
 
         if 'credentials' in ctx.instance.runtime_properties:
+            ctx.logger.info('L93')
             credentials = ctx.instance.runtime_properties['credentials']
+            ctx.logger.info('L95')
+
         try:
+            ctx.logger.info('L98')
             client = SshClient(credentials)
+            ctx.logger.info('L100')
         except Exception as exp:
             raise NonRecoverableError(
                 "Failed trying to connect to workload manager: " + str(exp))
