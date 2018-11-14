@@ -56,6 +56,7 @@ class SshClient(object):
 
     def __init__(self, credentials, logger):
         logger.info("SPIROS ssh.py::L57")
+        pdb.set_trace()
         for cred in credentials:
             logger.info("SPIROS ssh.py::L60, " + cred + ": " + credentials[cred])
 
