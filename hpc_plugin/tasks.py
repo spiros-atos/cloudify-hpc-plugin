@@ -96,7 +96,7 @@ def configure_execution(
 
         try:
             ctx.logger.info('L98')
-            client = SshClient(credentials)
+            client = SshClient(credentials, ctx.logger)
             ctx.logger.info('L100')
         except Exception as exp:
             raise NonRecoverableError(

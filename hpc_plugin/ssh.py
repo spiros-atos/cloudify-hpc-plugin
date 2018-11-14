@@ -52,8 +52,8 @@ class SshClient(object):
     """Represents a ssh client"""
     _client = None
 
-    def __init__(self, credentials):
-        logging.getLogger("paramiko").info("Spiros L57")
+    def __init__(self, credentials, logger):
+        logger.info("spiros ssh.py::L57")
         # Build a tunnel if necessary
         self._tunnel = None
         self._host = credentials['host']
