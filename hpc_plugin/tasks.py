@@ -12,6 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import pdb
+
 """ Holds the plugin tasks """
 
 import traceback
@@ -95,6 +98,7 @@ def configure_execution(
             ctx.logger.info('L95')
 
         try:
+            pdb.set_trace()
             ctx.logger.info('L98')
             client = SshClient(credentials, ctx.logger)
             ctx.logger.info('L100')
