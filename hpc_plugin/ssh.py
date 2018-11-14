@@ -18,6 +18,8 @@
 # 2018-02-07   hpcgogol@hlrs.de     added option login_shell
 #
 
+import json
+
 """Wrap of paramiko to send ssh commands
 
 Todo:
@@ -53,7 +55,8 @@ class SshClient(object):
     _client = None
 
     def __init__(self, credentials, logger):
-        logger.info("SPIROS ssh.py::L57"  + credentials)
+        logger.info("SPIROS ssh.py::L57"  + json.dumps(
+            credentials, indent=4, sort_keys=True))
         # Build a tunnel if necessary
         self._tunnel = None
         logger.info("SPIROS ssh.py::L59")
