@@ -53,10 +53,12 @@ class SshClient(object):
     _client = None
 
     def __init__(self, credentials, logger):
-        logger.info("spiros ssh.py::L57")
+        logger.info("SPIROS ssh.py::L57"  + credentials)
         # Build a tunnel if necessary
         self._tunnel = None
+        logger.info("SPIROS ssh.py::L59")
         self._host = credentials['host']
+        logger.info("SPIROS ssh.py::L61" + self._host)
         self._port = int(credentials['port']) if 'port' in credentials else 22
         if 'tunnel' in credentials:
             self._tunnel = SshForward(credentials)
