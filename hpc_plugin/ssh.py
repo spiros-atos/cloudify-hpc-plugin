@@ -55,7 +55,10 @@ class SshClient(object):
     _client = None
 
     def __init__(self, credentials, logger):
-        logger.info("SPIROS ssh.py::L57" + str(credentials))
+        logger.info("SPIROS ssh.py::L57")
+        for cred in credentials:
+            logger.info("SPIROS ssh.py::L60, " + cred + ": " + credentials[cred])
+
         # Build a tunnel if necessary
         self._tunnel = None
         logger.info("SPIROS ssh.py::L59")
