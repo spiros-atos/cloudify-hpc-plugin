@@ -55,15 +55,15 @@ class SshClient(object):
 
     def __init__(self, credentials, logger):
         self._logger = logger
-        self._logger.info("SPIROS ssh.py::L57")
+        self._logger.info("SshClient() ssh.py::L57")
         for cred in credentials:
-            self._logger.info("SPIROS ssh.py::L60, " + cred + ": " + credentials[cred])
+            self._logger.info("SshClient() ssh.py::L60, " + cred + ": " + credentials[cred])
 
         # Build a tunnel if necessary
         self._tunnel = None
-        self._logger.info("SPIROS ssh.py::L64")
+        self._logger.info("SshClient() ssh.py::L64")
         self._host = credentials['host']
-        self._logger.info("SPIROS ssh.py::L66, host: " + self._host)
+        self._logger.info("SshClient() ssh.py::L66, host: " + self._host)
         self._port = int(credentials['port']) if 'port' in credentials else 22
         if 'tunnel' in credentials:
             self._tunnel = SshForward(credentials)
@@ -189,24 +189,32 @@ class SshClient(object):
 
         # Check if connection is made previously
         if self._client is not None:
-            self._logger.info("ssh.py::L189")
+            self._logger.info("send_command() ssh.py::L192")
 
             if self._login_shell:
                 cmd = "bash -l -c {}".format(shlex_quote(command))
             else:
                 cmd = command
 
-            self._logger.info("ssh.py::L196, cmd: " + cmd)
+            self._logger.info("send_command() ssh.py::L199, cmd: " + cmd)
 
             # there is one channel per command
             stdin, stdout, stderr = self._client.exec_command(
                 cmd,
                 timeout=exec_timeout)
 
-            self._logger.info("ssh.py::L206, wait_result: " + str(wait_result))
+            # self._logger.info("send_command() ssh.py::L206, wait_result: " + str(wait_result))
+            self._logger.info("send_command() ssh.py::L206, stdin: " + str(stdin))
 
+            count = 0   # spiros
             if wait_result:
-                self._logger.info("ssh.py::L209")
+
+                # spiros
+                count += 1
+                if count > 3:
+                    wait_result = False
+
+                self._logger.info("send_command() ssh.py::L209")
 
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel
