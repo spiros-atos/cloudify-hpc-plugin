@@ -97,16 +97,24 @@ def configure_execution(
         try:
             ctx.logger.info('L98' + str(credentials))
             client = SshClient(credentials, ctx.logger)
-            ctx.logger.info('L100')
+            ctx.logger.info('tasks.py:L100')
+
+            print(client)
+            ctx.logger.info('tasks.py:L103' + print(client))
+
         except Exception as exp:
             raise NonRecoverableError(
                 "Failed trying to connect to workload manager: " + str(exp))
+
+        ctx.logger.info('tasks.py:L109')
 
         # TODO: use command according to wm
         _, exit_code = client.execute_shell_command(
             'uname',
             wait_result=True)
 
+        ctx.logger.info('tasks.py:L116')
+        
         if exit_code is not 0:
             client.close_connection()
             raise NonRecoverableError(
