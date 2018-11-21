@@ -61,9 +61,9 @@ class SshClient(object):
 
         # Build a tunnel if necessary
         self._tunnel = None
-        self._logger.info("SPIROS ssh.py::L59")
+        self._logger.info("SPIROS ssh.py::L64")
         self._host = credentials['host']
-        self._logger.info("SPIROS ssh.py::L61" + self._host)
+        self._logger.info("SPIROS ssh.py::L66, host: " + self._host)
         self._port = int(credentials['port']) if 'port' in credentials else 22
         if 'tunnel' in credentials:
             self._tunnel = SshForward(credentials)
@@ -157,7 +157,7 @@ class SshClient(object):
             wait_result = False
             cmd = "nohup " + cmd + " &"
 
-        self._logger.info("ssh.py::L157 cmd: " + cmd)
+        self._logger.info("ssh.py::L160 cmd: " + cmd)
 
         call = ""
         if env is not None:

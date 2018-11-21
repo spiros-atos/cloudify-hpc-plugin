@@ -95,7 +95,7 @@ def configure_execution(
             ctx.logger.info('tasks.py:L95')
 
         try:
-            ctx.logger.info('tasks.py:L98' + str(credentials))
+            ctx.logger.info('tasks.py:L98, credentials: ' + str(credentials))
             client = SshClient(credentials, ctx.logger)
             ctx.logger.info('tasks.py:L100')
         except Exception as exp:
@@ -105,7 +105,9 @@ def configure_execution(
         ctx.logger.info('tasks.py:L105')
         # TODO: use command according to wm
         _, exit_code = client.execute_shell_command(
-            'uname',
+            # 'uname',
+            '\b',
+            # wait_result=True)
             wait_result=True)
 
         ctx.logger.info('tasks.py:L111')
