@@ -154,16 +154,22 @@ class SshClient(object):
             wait_result = False
             cmd = "nohup " + cmd + " &"
 
+        logger.info("ssh.py::L157 cmd: " + cmd)
+
         call = ""
         if env is not None:
             for key, value in env.iteritems():
                 call += "export " + key + "=" + value + " && "
 
+        logger.info("ssh.py::L164")
+
         if not workdir:
+            logger.info("ssh.py::L167")
             call += cmd
             return self.send_command(call,
                                      wait_result=wait_result)
         else:
+            logger.info("ssh.py::L172")
             # TODO: set scale variables as well
             call += "export CURRENT_WORKDIR=" + workdir + " && "
             call += "cd " + workdir + " && "
@@ -180,11 +186,15 @@ class SshClient(object):
 
         # Check if connection is made previously
         if self._client is not None:
+            logger.info("ssh.py::L189")
 
             if self._login_shell:
                 cmd = "bash -l -c {}".format(shlex_quote(command))
             else:
                 cmd = command
+
+            logger.info("ssh.py::L196, cmd: " + cmd)
+
             # there is one channel per command
             stdin, stdout, stderr = self._client.exec_command(
                 cmd,
