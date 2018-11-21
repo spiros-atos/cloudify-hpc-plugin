@@ -214,7 +214,7 @@ class SshClient(object):
                 if count > 3:
                     wait_result = False
 
-                self._logger.info("send_command() ssh.py::L209")
+                self._logger.info("send_command() ssh.py::L209, count = " + count)
 
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel
