@@ -203,7 +203,11 @@ class SshClient(object):
                 cmd,
                 timeout=exec_timeout)
 
+            self._logger.info("ssh.py::L206, wait_result: " + wait_result)
+
             if wait_result:
+                self._logger.info("ssh.py::L209")
+
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel
 
