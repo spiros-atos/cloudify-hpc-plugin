@@ -90,25 +90,25 @@ def configure_execution(
                 "' not supported.")
 
         if 'credentials' in ctx.instance.runtime_properties:
-            ctx.logger.info('L93')
+            ctx.logger.info('tasks.py:L93')
             credentials = ctx.instance.runtime_properties['credentials']
-            ctx.logger.info('L95')
+            ctx.logger.info('tasks.py:L95')
 
         try:
-            ctx.logger.info('L98' + str(credentials))
+            ctx.logger.info('tasks.py:L98' + str(credentials))
             client = SshClient(credentials, ctx.logger)
-            ctx.logger.info('L100')
+            ctx.logger.info('tasks.py:L100')
         except Exception as exp:
             raise NonRecoverableError(
                 "Failed trying to connect to workload manager: " + str(exp))
 
-        ctx.logger.info('L105')
+        ctx.logger.info('tasks.py:L105')
         # TODO: use command according to wm
         _, exit_code = client.execute_shell_command(
             'uname',
             wait_result=True)
 
-        ctx.logger.info('L111')
+        ctx.logger.info('tasks.py:L111')
 
         if exit_code is not 0:
             client.close_connection()

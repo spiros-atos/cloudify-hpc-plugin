@@ -51,16 +51,19 @@ class SshClient(object):
     """Represents a ssh client"""
     _client = None
 
+    _logger = None
+
     def __init__(self, credentials, logger):
-        logger.info("SPIROS ssh.py::L57")
+        self._logger = logger
+        self._logger.info("SPIROS ssh.py::L57")
         for cred in credentials:
-            logger.info("SPIROS ssh.py::L60, " + cred + ": " + credentials[cred])
+            self._logger.info("SPIROS ssh.py::L60, " + cred + ": " + credentials[cred])
 
         # Build a tunnel if necessary
         self._tunnel = None
-        logger.info("SPIROS ssh.py::L59")
+        self._logger.info("SPIROS ssh.py::L59")
         self._host = credentials['host']
-        logger.info("SPIROS ssh.py::L61" + self._host)
+        self._logger.info("SPIROS ssh.py::L61" + self._host)
         self._port = int(credentials['port']) if 'port' in credentials else 22
         if 'tunnel' in credentials:
             self._tunnel = SshForward(credentials)
@@ -154,22 +157,22 @@ class SshClient(object):
             wait_result = False
             cmd = "nohup " + cmd + " &"
 
-        logger.info("ssh.py::L157 cmd: " + cmd)
+        self._logger.info("ssh.py::L157 cmd: " + cmd)
 
         call = ""
         if env is not None:
             for key, value in env.iteritems():
                 call += "export " + key + "=" + value + " && "
 
-        logger.info("ssh.py::L164")
+        self._logger.info("ssh.py::L164")
 
         if not workdir:
-            logger.info("ssh.py::L167")
+            self._logger.info("ssh.py::L167")
             call += cmd
             return self.send_command(call,
                                      wait_result=wait_result)
         else:
-            logger.info("ssh.py::L172")
+            self._logger.info("ssh.py::L172")
             # TODO: set scale variables as well
             call += "export CURRENT_WORKDIR=" + workdir + " && "
             call += "cd " + workdir + " && "
@@ -186,14 +189,14 @@ class SshClient(object):
 
         # Check if connection is made previously
         if self._client is not None:
-            logger.info("ssh.py::L189")
+            self._logger.info("ssh.py::L189")
 
             if self._login_shell:
                 cmd = "bash -l -c {}".format(shlex_quote(command))
             else:
                 cmd = command
 
-            logger.info("ssh.py::L196, cmd: " + cmd)
+            self._logger.info("ssh.py::L196, cmd: " + cmd)
 
             # there is one channel per command
             stdin, stdout, stderr = self._client.exec_command(
