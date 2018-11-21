@@ -51,7 +51,9 @@ class SshClient(object):
     """Represents a ssh client"""
     _client = None
 
+    # spiros
     _logger = None
+    _count = 0
 
     def __init__(self, credentials, logger):
         self._logger = logger
@@ -206,15 +208,14 @@ class SshClient(object):
             # self._logger.info("send_command() ssh.py::L206, wait_result: " + str(wait_result))
             self._logger.info("send_command() ssh.py::L206, stdin: " + str(stdin))
 
-            count = 0   # spiros
             if wait_result:
 
                 # spiros
-                count += 1
-                if count > 3:
+                self._count += 1
+                if self._count > 3:
                     wait_result = False
 
-                self._logger.info("send_command() ssh.py::L209, count = " + str(count))
+                self._logger.info("send_command() ssh.py::L209, count = " + str(self._count))
 
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel
