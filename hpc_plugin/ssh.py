@@ -208,7 +208,7 @@ class SshClient(object):
             self._logger.info("send_command() ssh.py::L208, stdin: " + str(stdin))
 
             if wait_result:
-                self._logger.info("send_command() ssh.py::L211"
+                self._logger.info("send_command() ssh.py::L211")
 
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel
