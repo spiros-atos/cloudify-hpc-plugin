@@ -59,7 +59,7 @@ class JobGraphInstance(object):
             key = 'simulate'
             if key in runtime_properties:
                 self.simulate = runtime_properties["simulate"]
-            else
+            else:
                 self.simulate = None
 
             self.host = runtime_properties["credentials"]["host"]
