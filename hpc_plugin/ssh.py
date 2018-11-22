@@ -218,16 +218,20 @@ class SshClient(object):
                 # indicate that we're not going to write to that channel
                 channel.shutdown_write()
 
+                self._logger.info("send_command() ssh.py::L221")
+
                 # read stdout/stderr in order to prevent read block hangs
                 stdout_chunks = []
                 stdout_chunks.append(stdout.channel.recv(
                     len(stdout.channel.in_buffer)))
                 # chunked read to prevent stalls
+                self._logger.info("send_command() ssh.py::L228")
                 while (not channel.closed
                        or channel.recv_ready()
                        or channel.recv_stderr_ready()):
                     # Stop if channel was closed prematurely,
                     # and there is no data in the buffers.
+                    self._logger.info("send_command() ssh.py::L234")
                     got_chunk = False
                     readq, _, _ = select.select([stdout.channel],
                                                 [],
