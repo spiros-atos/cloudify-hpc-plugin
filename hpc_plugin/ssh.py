@@ -53,7 +53,6 @@ class SshClient(object):
 
     # spiros
     _logger = None
-    _count = 0
 
     def __init__(self, credentials, logger):
         self._logger = logger
@@ -206,16 +205,10 @@ class SshClient(object):
                 timeout=exec_timeout)
 
             # self._logger.info("send_command() ssh.py::L206, wait_result: " + str(wait_result))
-            self._logger.info("send_command() ssh.py::L206, stdin: " + str(stdin))
+            self._logger.info("send_command() ssh.py::L208, stdin: " + str(stdin))
 
             if wait_result:
-
-                # spiros
-                self._count += 1
-                if self._count > 3:
-                    wait_result = False
-
-                self._logger.info("send_command() ssh.py::L209, count = " + str(self._count))
+                self._logger.info("send_command() ssh.py::L211"
 
                 # get the shared channel for stdout/stderr/stdin
                 channel = stdout.channel

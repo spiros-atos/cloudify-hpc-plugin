@@ -105,10 +105,10 @@ def configure_execution(
         ctx.logger.info('tasks.py:L105')
         # TODO: use command according to wm
         _, exit_code = client.execute_shell_command(
-            # 'uname',
-            '\b',
+            'uname',
+            # '\b',
             # wait_result=True)
-            wait_result=True)
+            wait_result=False)
 
         ctx.logger.info('tasks.py:L111')
 
