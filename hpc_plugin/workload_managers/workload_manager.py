@@ -407,6 +407,7 @@ class WorkloadManager(object):
                        for _ in range(size))
 
     def _exists_path(self, ssh_client, path):
+        self._logger.info("WORKLOAD_MANAGER.PY:L410")
         _, exit_code = ssh_client.execute_shell_command(
             '[ -d "' + path + '" ]',
             wait_result=True)

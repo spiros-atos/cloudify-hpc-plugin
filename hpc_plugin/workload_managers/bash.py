@@ -66,6 +66,8 @@ class Bash(workload_manager.WorkloadManager):
     def get_states(self, workdir, credentials, job_names, logger):
         # TODO set start time of consulting
         # (sacct only check current day)
+        self._logger.info("BASH.PY::L69")
+
         call = "cat msomonitor.data"
 
         client = SshClient(credentials)
