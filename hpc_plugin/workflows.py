@@ -27,13 +27,21 @@ LOOP_PERIOD = 1
 class JobGraphInstance(object):
     """ Wrap to add job functionalities to node instances """
 
-    def __init__(self, parent, instance):
+    _logger = None
+
+    # def __init__(self, parent, instance):
+    def __init__(self, parent, instance, logger):
+
+        self._logger = logger
+
         self._status = 'WAITING'
         self.parent_node = parent
         self.winstance = instance
 
         self.completed = not self.parent_node.is_job  # True if is not a job
         self.failed = False
+
+        self._logger.info("WORKFLOWS.PY:JobGraphInstance::__init__():L44")
 
         if parent.is_job:
             self._status = 'WAITING'
@@ -158,7 +166,13 @@ class JobGraphInstance(object):
 class JobGraphNode(object):
     """ Wrap to add job functionalities to nodes """
 
-    def __init__(self, node, job_instances_map):
+    _logger = None
+
+    # def __init__(self, node, job_instances_map):
+    def __init__(self, node, job_instances_map, logger):
+
+        self._logger = logger
+
         self.name = node.id
         self.type = node.type
         self.cfy_node = node
@@ -172,7 +186,8 @@ class JobGraphNode(object):
         self.instances = []
         for instance in node.instances:
             graph_instance = JobGraphInstance(self,
-                                              instance)
+                                              instance, self._logger)
+                                              # instance)
             self.instances.append(graph_instance)
             if graph_instance.parent_node.is_job:
                 job_instances_map[graph_instance.name] = graph_instance
@@ -285,7 +300,11 @@ class JobGraphNode(object):
         self.status = 'CANCELED'
 
 
-def build_graph(nodes):
+# def build_graph(nodes):
+def build_graph(nodes, logger):
+
+    logger.info("WORKFLOWS.PY::build_graph():L293")
+
     """ Creates a new graph of nodes and instances with the job wrapper """
 
     job_instances_map = {}
@@ -294,7 +313,8 @@ def build_graph(nodes):
     nodes_map = {}
     root_nodes = []
     for node in nodes:
-        new_node = JobGraphNode(node, job_instances_map)
+        # new_node = JobGraphNode(node, job_instances_map)
+        new_node = JobGraphNode(node, job_instances_map, logger)
         nodes_map[node.id] = new_node
         # check if it is root node
         try:
@@ -382,7 +402,8 @@ class Monitor(object):
 def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
 
-    root_nodes, job_instances_map = build_graph(ctx.nodes)
+    # root_nodes, job_instances_map = build_graph(ctx.nodes)
+    root_nodes, job_instances_map = build_graph(ctx.nodes, ctx.logger)
     monitor = Monitor(job_instances_map, ctx.logger)
 
     # Execution of first job instances
