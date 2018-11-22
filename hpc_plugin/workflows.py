@@ -52,10 +52,16 @@ class JobGraphInstance(object):
             for rp in runtime_properties:
                 self._logger.info("L53, rp: " + rp + ": " + runtime_properties[rp])
 
-            # for cred in credentials:
-            #     self._logger.info("SshClient() ssh.py:L60, " + cred + ": " + credentials[cred])
+            # self.simulate = runtime_properties["simulate"]
+            # self.host = runtime_properties["credentials"]["host"]
+            # self.workdir = runtime_properties['workdir']
 
-            self.simulate = runtime_properties["simulate"]
+            key = 'simulate'
+            if key in runtime_properties:
+                self.simulate = runtime_properties["simulate"]
+            else
+                self.simulate = None
+
             self.host = runtime_properties["credentials"]["host"]
             self.workdir = runtime_properties['workdir']
 
