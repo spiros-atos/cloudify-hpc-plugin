@@ -195,7 +195,7 @@ class SshClient(object):
             if self._login_shell:
                 cmd = "bash -l -c {}".format(shlex_quote(command))
             else:
-                cmd = comman
+                cmd = command
 
             self._logger.info("send_command() ssh.py::L199, cmd: " + cmd)
 
@@ -225,7 +225,8 @@ class SshClient(object):
                 stdout_chunks.append(stdout.channel.recv(
                     len(stdout.channel.in_buffer)))
                 # chunked read to prevent stalls
-                self._logger.info("send_command() ssh.py::L228 - " + str(stdout_chunks[0]))
+                self._logger.info("send_command() ssh.py::L228 - len: " + str(len(stdout_chunks)))
+                self._logger.info("send_command() ssh.py::L229 - " + str(stdout_chunks[0]))
                 while (not channel.closed
                        or channel.recv_ready()
                        or channel.recv_stderr_ready()):
