@@ -51,7 +51,7 @@ class JobGraphInstance(object):
 
             self._logger.info("L52, runtime_properties has " + str(len(runtime_properties)) + " elements.")
             for rp in runtime_properties:
-                self._logger.info("L53, rp: " + rp + ": " + runtime_properties[rp])
+                self._logger.info("L53, rp: " + str(rp) + ": " + str(runtime_properties[rp]))
 
             # self.simulate = runtime_properties["simulate"]
             # self.host = runtime_properties["credentials"]["host"]
