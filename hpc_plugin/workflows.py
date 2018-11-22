@@ -62,8 +62,17 @@ class JobGraphInstance(object):
             else:
                 self.simulate = None
 
-            self.host = runtime_properties["credentials"]["host"]
-            self.workdir = runtime_properties['workdir']
+            key = 'credentials'
+            if key in runtime_properties:
+                self.host = runtime_properties["credentials"]["host"]
+            else:
+                self.host = None
+
+            key = 'workdir'
+            if key in runtime_properties:                
+                self.workdir = runtime_properties['workdir']
+            else:
+                self.workdir = None
 
             # Decide how to monitor the job
             if runtime_properties["external_monitor_entrypoint"]:
