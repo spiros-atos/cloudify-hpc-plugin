@@ -56,15 +56,13 @@ class SshClient(object):
 
     def __init__(self, credentials, logger):
         self._logger = logger
-        self._logger.info("SshClient() ssh.py::L57")
+        self._logger.info("SshClient() ssh.py:L57")
         for cred in credentials:
-            self._logger.info("SshClient() ssh.py::L60, " + cred + ": " + credentials[cred])
+            self._logger.info("SshClient() ssh.py:L60, " + cred + ": " + credentials[cred])
 
         # Build a tunnel if necessary
         self._tunnel = None
-        self._logger.info("SshClient() ssh.py::L64")
         self._host = credentials['host']
-        self._logger.info("SshClient() ssh.py::L66, host: " + self._host)
         self._port = int(credentials['port']) if 'port' in credentials else 22
         if 'tunnel' in credentials:
             self._tunnel = SshForward(credentials)
