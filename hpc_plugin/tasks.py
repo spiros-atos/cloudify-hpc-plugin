@@ -108,8 +108,8 @@ def configure_execution(
         #     'uname',
         #     wait_result=True)
         exit_code = client.execute_shell_command(
-            'uname',
-            # '\b',
+            # 'uname',
+            '\b',
             wait_result=False)
 
         ctx.logger.info('tasks.py:L111, exit_code: ' + str(exit_code))
