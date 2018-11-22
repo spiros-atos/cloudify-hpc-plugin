@@ -359,6 +359,9 @@ class Monitor(object):
     """Monitor the instances"""
 
     def __init__(self, job_instances_map, logger):
+
+        logger.info("WORKFLOWS.PY:Monitor::__init__():L363")
+
         self.job_ids = {}
         self._execution_pool = {}
         self.timestamp = 0
@@ -428,6 +431,8 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
     # root_nodes, job_instances_map = build_graph(ctx.nodes)
     root_nodes, job_instances_map = build_graph(ctx.nodes, ctx.logger)
     monitor = Monitor(job_instances_map, ctx.logger)
+
+    ctx.logger.info("WORKFLOWS.PY::run_jobs():L435")
 
     # Execution of first job instances
     tasks_list = []
