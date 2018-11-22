@@ -104,13 +104,15 @@ def configure_execution(
 
         ctx.logger.info('tasks.py:L105')
         # TODO: use command according to wm
-        _, exit_code = client.execute_shell_command(
+        # _, exit_code = client.execute_shell_command(
+        #     'uname',
+        #     wait_result=True)
+        exit_code = client.execute_shell_command(
             'uname',
             # '\b',
-            # wait_result=True)
             wait_result=False)
 
-        ctx.logger.info('tasks.py:L111')
+        ctx.logger.info('tasks.py:L111, exit_code: ' + str(exit_code))
 
         if exit_code is not 0:
             client.close_connection()
