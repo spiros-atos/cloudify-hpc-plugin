@@ -277,12 +277,14 @@ class WorkloadManager(object):
             call,
             workdir=workdir)
 
-    def create_new_workdir(self, ssh_client, base_dir, base_name):
+    def create_new_workdir(self, ssh_client, base_dir, base_name, logger):
         workdir = self._get_time_name(base_name)
+
+        logger.info("WORKLOAD_MANAGER.PY:L283")
 
         # we make sure that the workdir does not exists
         base_name = workdir
-        while self._exists_path(ssh_client, base_dir + "/" + workdir):
+        while self._exists_path(ssh_client, base_dir + "/" + workdir, logger):
             workdir = self._get_random_name(base_name)
 
         full_path = base_dir + "/" + workdir
@@ -406,8 +408,10 @@ class WorkloadManager(object):
         return ''.join(random.SystemRandom().choice(chars)
                        for _ in range(size))
 
-    def _exists_path(self, ssh_client, path):
-        self._logger.info("WORKLOAD_MANAGER.PY:L410")
+    def _exists_path(self, ssh_client, path, logger):
+        
+        logger.info("WORKLOAD_MANAGER.PY:L410")
+
         _, exit_code = ssh_client.execute_shell_command(
             '[ -d "' + path + '" ]',
             wait_result=True)

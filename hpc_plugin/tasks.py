@@ -126,7 +126,8 @@ def configure_execution(
         if workdir_prefix is "":
             prefix = ctx.blueprint.id
 
-        workdir = wm.create_new_workdir(client, base_dir, prefix)
+        # workdir = wm.create_new_workdir(client, base_dir, prefix)
+        workdir = wm.create_new_workdir(client, base_dir, prefix, ctx.logger)
         client.close_connection()
         if workdir is None:
             raise NonRecoverableError(
