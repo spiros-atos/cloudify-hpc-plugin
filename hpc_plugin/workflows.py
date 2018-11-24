@@ -72,6 +72,16 @@ class JobGraphInstance(object):
         if not self.parent_node.is_job:
             return
 
+        # First manage i/o
+        self.winstance.send_event('Managing i/o..')
+        result = self.winstance.execute_operation('hpc.interfaces.'
+                                                  'lifecycle.manage_io')
+        result.task.wait_for_terminated()
+        if result.task.get_state() != tasks.TASK_FAILED:
+            self.winstance.send_event('..i/o OK')
+        else:
+            return result.task
+
         self.winstance.send_event('Queuing job..')
         result = self.winstance.execute_operation('hpc.interfaces.'
                                                   'lifecycle.queue',

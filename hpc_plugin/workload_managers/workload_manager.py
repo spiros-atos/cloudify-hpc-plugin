@@ -115,6 +115,26 @@ class WorkloadManager(object):
             return Bash()
         return None
 
+    def get_remote_files(
+            self,
+            inputs,
+            logger):
+        # FIXME
+        # The files navigates through the orchestrator, which is not ideal.
+        # Better solution would be to call scp in the receiving machine
+        for input_def in inputs:
+            local_path = '/tmp/' + input_def['file']
+            # Download output
+            client = SshClient(input_def['out_credentials'])
+            client.download_file(input_def['out_path'], local_path)
+            client.close_connection()
+
+            # Upload input
+            client = SshClient(input_def['in_credentials'])
+            client.download_file(local_path, input_def['in_path'])
+            client.close_connection()
+        return True
+
     def submit_job(self,
                    ssh_client,
                    name,

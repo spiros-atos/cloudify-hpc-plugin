@@ -303,9 +303,9 @@ def preconfigure_job(
 
 @operation
 def bootstrap_job(
-            deployment,
-            skip_cleanup,
-            **kwarsgs):  # pylint: disable=W0613
+        deployment,
+        skip_cleanup,
+        **kwarsgs):  # pylint: disable=W0613
     """Bootstrap a job with a script that receives SSH credentials as imput"""
     if not deployment:
         return
@@ -425,6 +425,108 @@ def deploy_job(script,
     client.close_connection()
 
     return exit_code is 0
+
+
+@operation
+def manage_io(job_options, **kwargs):
+    """ Download the inputs and prepare the outputs """
+    _get_inputs(job_options, ctx)
+    _set_outputs_to_runtime(job_options, ctx)
+
+
+def _set_outputs_to_runtime(job_options, ctx):
+    """ Set full outputs paths in runtime properties """
+    if 'remote_outputs' in job_options \
+            and job_options['remote_outputs']:
+        outputs = []
+        workdir = ctx.instance.runtime_properties['workdir']
+        for output_def in job_options['remote_outputs']:
+            if 'relative_path' in output_def:
+                path = output_def['relative_path']
+                # Clean path
+                if path.startswith('.'):
+                    path = path[1:]
+                if path.startswith('/'):
+                    path = path[1:]
+                if path.endswith('/'):
+                    path = path[:-1]
+                path = workdir + '/' + path
+            else:
+                path = workdir
+            outputs.append({
+                'file': output_def['file'],
+                'path': workdir + '/' + path + '/' + output_def['file']})
+
+        ctx.instance.runtime_properties['outputs'] = outputs
+
+
+def _get_inputs(job_options, ctx):
+    """ Download the remote inputs """
+    simulate = ctx.instance.runtime_properties['simulate']
+
+    if simulate:
+        return
+
+    inputs = []
+    if 'remote_inputs' in job_options \
+            and job_options['remote_inputs']:
+        for input_def in job_options['remote_inputs']:
+            workdir = ctx.instance.runtime_properties['workdir']
+            for rel in ctx.instance.relationships:  # job relationships
+                instance = rel.target.instance
+                if 'hpc.nodes.Job' in instance.type_hierarchy:
+                    # look for matching outputs
+                    if 'outputs' in instance.runtime_properties:
+                        for output_def in \
+                                instance.runtime_properties['outputs']:
+                            if output_def['file'] == input_def['file']:
+                                if 'relative_path' in output_def:
+                                    path = output_def['relative_path']
+                                    # Clean path
+                                    if path.startswith('.'):
+                                        path = path[1:]
+                                    if path.startswith('/'):
+                                        path = path[1:]
+                                    if path.endswith('/'):
+                                        path = path[:-1]
+                                    path = workdir + '/' + path
+                                else:
+                                    path = workdir
+                                inputs.append({
+                                    'file': output_def['file'],
+                                    'out_credentials':
+                                        instance.
+                                        runtime_properties['credentials'],
+                                    'out_path': output_def['path'],
+                                    'in_credentials':
+                                        ctx.instance.
+                                        runtime_properties['credentials'],
+                                    'in_path':
+                                        path + '/' +
+                                        input_def['file']})
+                                break
+                        else:
+                            continue
+                        break
+            else:
+                continue
+            break
+
+    if inputs:
+        wm_type = ctx.instance.runtime_properties['workload_manager']
+        wm = WorkloadManager.factory(wm_type)
+        if not wm:
+            raise NonRecoverableError(
+                "Workload Manager '" +
+                wm_type +
+                "' not supported.")
+        error = wm.get_remote_files(
+            inputs,
+            ctx.logger)
+
+        if error:
+            raise NonRecoverableError(error)
+
 
 @operation
 def send_job(job_options, **kwargs):  # pylint: disable=W0613

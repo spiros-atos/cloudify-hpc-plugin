@@ -226,9 +226,11 @@ Use this tipe to describe a HPC job.
 *** `description`: Text describing the data file.
 * `skip_cleanup`: Set to true to not clean up orchestrator auxiliar files. Default `False`.
 
-NOTE: The variable $CURRENT_WORKDIR is available in all operations and scripts. It points to the working directory of the execution in the HPC from the _HOME_ directory: `/home/user/$CURRENT_WORKDIR/`.
+NOTE: The variable `$CURRENT_WORKDIR` is available in all operations and scripts. It represents the full path to the working directory of the execution.
 
-NOTE: The variables `$SCALE_INDEX`, `$SCALE_COUNT` and `$SCALE_MAX` will be available in the batch script if the line `# DYNAMIC VARIABLES` exist (they will be dynamicaly loaded after this line). They hold, for each job instance, the index, the total number of instances, and the maximun in parallel respectively.
+NOTE: The variables `$SCALE_INDEX`, `$SCALE_COUNT` and `$SCALE_MAX` are available in the batch script if the line `# DYNAMIC VARIABLES` exist (they will be dynamicaly loaded after that line). For each job instance they hold the index, the total number of instances, and the maximun in parallel respectively.
+
+NOTE: The variables `$CFY_EXECUTION_ID` and `$CFY_JOB_NAME` are available under a job execution. They define the orchestrator execution id, and the orchestrator job name.
 
 *Example*
 

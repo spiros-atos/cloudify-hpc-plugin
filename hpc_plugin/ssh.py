@@ -30,6 +30,8 @@ import logging
 import io
 import socket
 
+from scp import SCPClient
+
 try:
     import SocketServer
 except ImportError:
@@ -258,6 +260,24 @@ class SshClient(object):
                 return (None, None)
             else:
                 return False
+
+    def download_file(self, remote_path, local_path):
+        """ Downloads a file from the remote machine """
+        # ftp_client = self._client.open_sftp()
+        # ftp_client.get(remote_path, local_path)
+        # ftp_client.close()
+        scp = SCPClient(self._client.get_transport())
+        scp.get(remote_path, local_path=local_path)
+        scp.close()
+
+    def upload_file(self, local_path, remote_path):
+        """ Uploads a file to the remote machine """
+        # ftp_client = self._client.open_sftp()
+        # ftp_client.put(local_path, remote_path)
+        # ftp_client.close()
+        scp = SCPClient(self._client.get_transport())
+        scp.put(local_path, remote_path=remote_path)
+        scp.close()
 
     @staticmethod
     def check_ssh_client(ssh_client,

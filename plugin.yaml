@@ -10,7 +10,7 @@ plugins:
         # "plugins" directory.
         source: https://github.com/MSO4SC/cloudify-hpc-plugin/archive/staging.zip
         package_name: cloudify-hpc-plugin
-        package_version: '2.0.0'
+        package_version: '2.1.0'
 
 workflows:
     run_jobs:
@@ -159,6 +159,11 @@ node_types:
                         skip_cleanup:
                             default: { get_property: [SELF, skip_cleanup] }
             hpc.interfaces.lifecycle:
+                manage_io:
+                    implementation: hpc.hpc_plugin.tasks.manage_io
+                    inputs:
+                        job_options:
+                            default: { get_property: [SELF, job_options] }
                 queue:
                     implementation: hpc.hpc_plugin.tasks.send_job
                     inputs:
