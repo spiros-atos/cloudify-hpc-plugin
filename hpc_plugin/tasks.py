@@ -80,7 +80,6 @@ def configure_execution(
     ctx.logger.info('Connecting to workload manager..')
 
     ctx.logger.info('tasks.py::configure_execution::L82: Spiros was here!')
-    ctx.logger.info('config: ', str(config))
 
     if not simulate:
         wm_type = config['workload_manager']
