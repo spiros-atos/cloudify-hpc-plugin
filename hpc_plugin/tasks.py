@@ -77,10 +77,9 @@ def configure_execution(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Creates the working directory for the execution """
-    ctx.logger.info('Connecting to workload manager..')
-
     ctx.logger.info('tasks.py::configure_execution L82 - Spiros was here!')
     ctx.logger.info('config: ', str(config))
+    ctx.logger.info('Connecting to workload manager.. FOR FUCK SAKE')
 
     if not simulate:
         wm_type = config['workload_manager']
