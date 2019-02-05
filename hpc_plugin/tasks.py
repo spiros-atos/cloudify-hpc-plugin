@@ -79,7 +79,7 @@ def configure_execution(
     """ Creates the working directory for the execution """
     ctx.logger.info('tasks.py::configure_execution L82 - Spiros was here!')
     ctx.logger.info('config: ', str(config))
-    ctx.logger.info('Connecting to workload manager.. FOR FUCK SAKE')
+    ctx.logger.info('Connecting to workload manager..')
 
     if not simulate:
         wm_type = config['workload_manager']
