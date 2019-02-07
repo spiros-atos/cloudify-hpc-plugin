@@ -57,7 +57,7 @@ class SshClient(object):
     def __init__(self, credentials, logger):
         self._logger = logger
         self._logger.info("SshClient() ssh.py:L57")
-        self._logger.info("SshClient() ssh.py:L60 - #credentials: " + len(credentials))
+        self._logger.info("SshClient() ssh.py:L60 - #credentials: " + str(len(credentials)))
         for cred in credentials:
             self._logger.info("SshClient() ssh.py:L60, " + cred + ": " + credentials[cred])
 
