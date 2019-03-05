@@ -1,3 +1,5 @@
+import pdb
+
 ########
 # Copyright (c) 2019 EUXDAT - spiros.michalakopoulos@atos.net
 #
@@ -76,6 +78,10 @@ def configure_execution(
         workdir_prefix,
         simulate,
         **kwargs):  # pylint: disable=W0613
+
+    ctx.logger.info('Spiros was here!')
+    pdb.set_trace()
+
     """ Creates the working directory for the execution """
     ctx.logger.info('Connecting to workload manager..')
 
