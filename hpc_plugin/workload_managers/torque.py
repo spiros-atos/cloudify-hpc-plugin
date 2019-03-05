@@ -226,7 +226,7 @@ class Torque(WorkloadManager):
         call = "echo {} | xargs -n 1 qselect -N".format(
             shlex_quote(' '.join(map(shlex_quote, job_names))))
 
-        client = SshClient(credentials)
+        client = SshClient(credentials, logger)
 
         output, exit_code = client.execute_shell_command(
             call,
