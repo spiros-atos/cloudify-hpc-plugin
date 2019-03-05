@@ -48,13 +48,14 @@ logging.getLogger("paramiko").setLevel(logging.WARNING)
 logging.getLogger('paramiko.transport').addHandler(NullHandler())
 
 
-class SshClient(object, logger):
+class SshClient(object):
     """Represents a ssh client"""
     _client = None
-    _logger = logger
+    _logger = None
 
-    def __init__(self, credentials):
-        _logger.info('SSH.PY::__INIT__ L57')
+    def __init__(self, credentials, logger):
+        self._logger = logger
+        self._logger.info('SSH.PY::__INIT__ L57')
 
         # Build a tunnel if necessary
         self._tunnel = None
@@ -64,12 +65,12 @@ class SshClient(object, logger):
             self._tunnel = SshForward(credentials)
             self._host = "localhost"
             self._port = self._tunnel.port()
-        _logger.info('SSH.PY::__INIT__ L67')
+        self._logger.info('SSH.PY::__INIT__ L67')
 
         self._client = client.SSHClient()
         self._client.set_missing_host_key_policy(client.AutoAddPolicy())
 
-        _logger.info('SSH.PY::__INIT__ L72')
+        self._logger.info('SSH.PY::__INIT__ L72')
         # Build the private key if provided
         private_key = None
         if 'private_key' in credentials and credentials['private_key']:
@@ -88,7 +89,7 @@ class SshClient(object, logger):
                 key_file,
                 password=private_key_password)
 
-        _logger.info('SSH.PY::__INIT__ L91')
+        _self._logger.info('SSH.PY::__INIT__ L91')
 
         # This switch allows to execute commands in a login shell.
         # By default commands are executed on the remote host.
