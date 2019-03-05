@@ -2,105 +2,116 @@
 ################### HPC Infrastructre ##################
 primary_hpc:
   id: 10
-  infrastructure: FTII (HPC)
-  name: FTII
+  # infrastructure: FTII (HPC)
+  # name: FTII
+  infrastructure: HLRS (HPC)
+  name: HLRS
   owner: 1
   definition:
     credentials: &id008
-      host: ft6.cesga.es
-      user: "***"
-      password: ''
-      private_key: |
-        -----BEGIN RSA PRIVATE KEY-----
-        ***
-        -----END RSA PRIVATE KEY-----
-      private_key_password: ''
-    local_volumes:
-    - container_mount_point: /tmp
-      name: TEMP
-      path: /tmp
-    mpi_versions:
-    - &id009
-      default: true
-      description: Stable mpi version
-      library: OpenMPI
-      load_command: &id015 module load gcc/5.3.0 openmpi/1.10.2
-      name: OpenMPI 1.10.2
-      version: 1.10.2
-    partitions:
-    - default: true
-      description: Subset of nodes
-      name: thin-shared
-      properties:
-        cpus_per_node: 24
-        default_memory_per_cpu: 128M
-        max_memory_per_node: 512M
-        max_nodes: 2
-        max_time: UNLIMITED
-        min_nodes: 0
-        shared: true
-        total_nodes: 2
-    - &id010
-      description: Short jobs of 1 complete node
-      name: &id014 cola-corta
-      properties:
-        cpus_per_node: 24
-        default_memory_per_cpu: 128M
-        max_memory_per_node: 512M
-        max_nodes: 2
-        max_time: UNLIMITED
-        min_nodes: 1
-        shared: false
-        total_nodes: 2
-    persistent_volumes:
-    - &id011
-      container_mount_point: /mnt
-      default: true
-      description: Regular user file storage
-      name: HOME
-      path: &id019 $HOME
-    - container_mount_point: /mnt
-      description: Big user files storage
-      name: LUSTRE
-      path: $LUSTRE
-    scratch_volume:
-      container_mount_point: /scratch
-      name: Scratch
-      path: &id020 /scratch
-    singularity_versions:
-    - &id012
-      default: true
-      description: Stable singularity version
-      load_command: &id016 module load singularity/2.4.2
-      name: Singularity 2.4.2
-      version: 2.4.2
+      # host: ft6.cesga.es
+      # user: "***"
+      # password: ''
+      # private_key: |
+      #   -----BEGIN RSA PRIVATE KEY-----
+      #   ***
+      #   -----END RSA PRIVATE KEY-----
+      # private_key_password: ''
+      host: hazelhen.hww.de
+      user: "xeuspimi"
+      password: 'F1rst0n@01'
+      # private_key: |
+      #   -----BEGIN RSA PRIVATE KEY-----
+      #   ***
+      #   -----END RSA PRIVATE KEY-----
+      # private_key_password: ''
+    # local_volumes:
+    # - container_mount_point: /tmp
+    #   name: TEMP
+    #   path: /tmp
+    # mpi_versions:
+    # - &id009
+    #   default: true
+    #   description: Stable mpi version
+    #   library: OpenMPI
+    #   load_command: &id015 module load gcc/5.3.0 openmpi/1.10.2
+    #   name: OpenMPI 1.10.2
+    #   version: 1.10.2
+    # partitions:
+    # - default: true
+    #   description: Subset of nodes
+    #   name: thin-shared
+    #   properties:
+    #     cpus_per_node: 24
+    #     default_memory_per_cpu: 128M
+    #     max_memory_per_node: 512M
+    #     max_nodes: 2
+    #     max_time: UNLIMITED
+    #     min_nodes: 0
+    #     shared: true
+    #     total_nodes: 2
+    # - &id010
+    #   description: Short jobs of 1 complete node
+    #   name: &id014 cola-corta
+    #   properties:
+    #     cpus_per_node: 24
+    #     default_memory_per_cpu: 128M
+    #     max_memory_per_node: 512M
+    #     max_nodes: 2
+    #     max_time: UNLIMITED
+    #     min_nodes: 1
+    #     shared: false
+    #     total_nodes: 2
+    # persistent_volumes:
+    # - &id011
+    #   container_mount_point: /mnt
+    #   default: true
+    #   description: Regular user file storage
+    #   name: HOME
+    #   path: &id019 $HOME
+    # - container_mount_point: /mnt
+    #   description: Big user files storage
+    #   name: LUSTRE
+    #   path: $LUSTRE
+    # scratch_volume:
+    #   container_mount_point: /scratch
+    #   name: Scratch
+    #   path: &id020 /scratch
+    # singularity_versions:
+    # - &id012
+    #   default: true
+    #   description: Stable singularity version
+    #   load_command: &id016 module load singularity/2.4.2
+    #   name: Singularity 2.4.2
+    #   version: 2.4.2
     wm_config: &id013
       country_tz: Europe/Madrid
-      workload_manager: SLURM
+      # workload_manager: SLURM
+      workload_manager: TORQUE
 
-app_singuarity_image:
-  default: true
-  description: SRegistry example
-  file: &id018 mso4sc-sregistry-latest.simg
-  name: SRegistry example
-  uri: &id017 'shub://sregistry.srv.cesga.es/mso4sc/sregistry:latest'
+# app_singuarity_image:
+#   default: true
+#   description: SRegistry example
+#   file: &id018 mso4sc-sregistry-latest.simg
+#   name: SRegistry example
+#   uri: &id017 'shub://sregistry.srv.cesga.es/mso4sc/sregistry:latest'
 
-hpc_base_dir: *id011
-app_mpi_version: *id009
-app_singularity_version: *id012
-app_singularity_storage: *id011
-partition: *id010
+# hpc_base_dir: *id011
+# app_mpi_version: *id009
+# app_singularity_version: *id012
+# app_singularity_storage: *id011
+# partition: *id010
 
-hpc_base_dir_path: *id019
+# hpc_base_dir_path: *id019
 hpc_wm_config: *id013
 hpc_wm_credentials: *id008
-mpi_load_command: *id015
-singularity_load_command: *id016
-singularity_image_uri: *id017
-singularity_image_filename: *id018
-partition_name: *id014
-singularity_image_storage: *id019
-scratch_voulume_mount_point: *id020
+# mpi_load_command: *id015
+# singularity_load_command: *id016
+# singularity_image_uri: *id017
+# singularity_image_filename: *id018
+# partition_name: *id014
+# singularity_image_storage: *id019
+# scratch_voulume_mount_point: *id020
 
 ################# Cloud Infrastructre #################
 primary_cloud:
@@ -473,5 +484,6 @@ test_complex_input:
     first_first_tag: test1.1
     first_second_tag: {foo: bar}
   second_tag: test2.1
-job_prefix: mso
+# job_prefix: mso
+job_prefix: euxd
 monitor_entrypoint: ''

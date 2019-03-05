@@ -1,5 +1,5 @@
 ########
-# Copyright (c) 2017 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2019 EUXDAT - spiros.michalakopoulos@atos.net
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,10 +30,12 @@ node_templates:
             credentials: { get_input: hpc_wm_credentials }
             external_monitor_entrypoint: { get_input: monitor_entrypoint }
             job_prefix: { get_input: job_prefix }
-            base_dir: { get_input: "hpc_base_dir" }
-            monitor_period: 15
+            # base_dir: { get_input: "hpc_base_dir" }
+            # monitor_period: 15
+            base_dir: '~'
+            monitor_period: 2
             skip_cleanup: true
-            simulate: True  # COMMENT to test against a real HPC
+            # simulate: True  # COMMENT to test against a real HPC
             workdir_prefix: "single_sbatch"
 
     single_job:
@@ -41,7 +43,8 @@ node_templates:
         properties:
             job_options:
                 type: 'SBATCH'
-                command: "touch.script single.test"
+                # command: "touch.script single.test"
+                command: "touch.script"
             deployment:
                 bootstrap: 'scripts/bootstrap_sbatch_example.sh'
                 revert: 'scripts/revert_sbatch_example.sh'

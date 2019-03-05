@@ -1,5 +1,5 @@
 ########
-# Copyright (c) 2017-2018 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2019 EUXDAT - spiros.michalakopoulos@atos.net
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,8 +77,6 @@ def configure_execution(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Creates the working directory for the execution """
-    ctx.logger.info('tasks.py::configure_execution L82 - Spiros was here!')
-    ctx.logger.info('config: ', str(config))
     ctx.logger.info('Connecting to workload manager..')
 
     if not simulate:

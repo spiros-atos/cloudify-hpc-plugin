@@ -1,5 +1,5 @@
 ########
-# Copyright (c) 2017 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2019 EUXDAT - spiros.michalakopoulos@atos.net
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -384,9 +384,6 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
 
     root_nodes, job_instances_map = build_graph(ctx.nodes)
     monitor = Monitor(job_instances_map, ctx.logger)
-
-    ctx.logger.info("workflows.py::run_jobs() Spiros was here too!")
-    ctx.logger.info("monitor: ", str(monitor))
 
     # Execution of first job instances
     tasks_list = []
