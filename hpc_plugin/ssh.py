@@ -89,7 +89,7 @@ class SshClient(object):
                 key_file,
                 password=private_key_password)
 
-        _self._logger.info('SSH.PY::__INIT__ L91')
+        self._logger.info('SSH.PY::__INIT__ L91')
 
         # This switch allows to execute commands in a login shell.
         # By default commands are executed on the remote host.
