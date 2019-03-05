@@ -1,5 +1,3 @@
-import pdb
-
 ########
 # Copyright (c) 2019 EUXDAT - spiros.michalakopoulos@atos.net
 #
@@ -78,16 +76,14 @@ def configure_execution(
         workdir_prefix,
         simulate,
         **kwargs):  # pylint: disable=W0613
-
-    ctx.logger.info('Spiros was here!')
-    pdb.set_trace()
-
     """ Creates the working directory for the execution """
     ctx.logger.info('Connecting to workload manager..')
 
     if not simulate:
+        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L83')
         wm_type = config['workload_manager']
         ctx.logger.info(' - manager: {wm_type}'.format(wm_type=wm_type))
+        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L86')
 
         wm = WorkloadManager.factory(wm_type)
         if not wm:
