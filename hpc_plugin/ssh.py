@@ -53,7 +53,7 @@ class SshClient(object):
     _client = None
     _logger = None
 
-    def __init__(self, credentials, logger):
+    def __init__(self, credentials, logger = None):
         self._logger = logger
         self._logger.info('SSH.PY::__INIT__ L57')
 
