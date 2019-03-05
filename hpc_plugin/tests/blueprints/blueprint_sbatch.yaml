@@ -20,7 +20,7 @@ imports:
     - https://raw.githubusercontent.com/spiros-atos/cloudify-hpc-plugin/master/resources/types/cfy_types.yaml
     # relative import of plugin.yaml that resides in the blueprint directory
     - plugin.yaml
-    # - inputs_def.yaml
+    - inputs_def.yaml
 
 node_templates:
     hpc_wm:
@@ -28,7 +28,7 @@ node_templates:
         properties:
             config: { get_input: hpc_wm_config }
             credentials: { get_input: hpc_wm_credentials }
-            external_monitor_entrypoint: { get_input: monitor_entrypoint }
+            # external_monitor_entrypoint: { get_input: monitor_entrypoint }
             job_prefix: { get_input: job_prefix }
             # base_dir: { get_input: "hpc_base_dir" }
             # monitor_period: 15
@@ -50,7 +50,7 @@ node_templates:
                 revert: 'scripts/revert_sbatch_example.sh'
                 inputs:
                     - 'single'
-                    - { get_input: partition_name }
+                    # - { get_input: partition_name }
             skip_cleanup: True
         relationships:
             - type: job_managed_by_wm
