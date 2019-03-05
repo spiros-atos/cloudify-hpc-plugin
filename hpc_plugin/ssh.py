@@ -55,7 +55,6 @@ class SshClient(object):
 
     def __init__(self, credentials, logger):
         self._logger = logger
-        self._logger.info('SSH.PY::__INIT__ L57')
 
         # Build a tunnel if necessary
         self._tunnel = None
@@ -65,12 +64,10 @@ class SshClient(object):
             self._tunnel = SshForward(credentials)
             self._host = "localhost"
             self._port = self._tunnel.port()
-        self._logger.info('SSH.PY::__INIT__ L67')
 
         self._client = client.SSHClient()
         self._client.set_missing_host_key_policy(client.AutoAddPolicy())
 
-        self._logger.info('SSH.PY::__INIT__ L72')
         # Build the private key if provided
         private_key = None
         if 'private_key' in credentials and credentials['private_key']:
@@ -104,8 +101,15 @@ class SshClient(object):
 
         retries = 5
         passwd = credentials['password'] if 'password' in credentials else None
+
         while True:
             try:
+                self._logger.info('SSH.PY::__INIT__ L107')
+                self._logger.info(str(self._host))
+                self._logger.info(str(self._port))
+                self._logger.info(str(credentials['user']))
+                self._logger.info(str(private_key))
+                self._logger.info(str(passwd))
                 self._client.connect(
                     self._host,
                     port=self._port,
@@ -115,13 +119,16 @@ class SshClient(object):
                     look_for_keys=False
                 )
             except ssh_exception.SSHException as err:
-                if retries > 0 and \
-                        str(err) == "Error reading SSH protocol banner":
+                self._logger.info('SSH.PY::__INIT__ L122')
+                if (retries > 0 and 
+                    str(err) == "Error reading SSH protocol banner"):
+                    self._logger.info('SSH.PY::__INIT__ L125')
                     retries -= 1
                     logging.getLogger("paramiko").\
                         warning("Retrying SSH connection: " + str(err))
                     continue
                 else:
+                    self._logger.info('SSH.PY::__INIT__ L131')
                     raise err
             break
 
