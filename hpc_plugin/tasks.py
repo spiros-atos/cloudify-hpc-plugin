@@ -95,7 +95,7 @@ def configure_execution(
         try:
             ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L96')
             ctx.logger.info('credentials = ' + str(credentials))
-            client = SshClient(credentials)
+            client = SshClient(credentials, ctx.logger)
             ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L98')
         except Exception as exp:
             raise NonRecoverableError(
