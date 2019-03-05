@@ -80,10 +80,9 @@ def configure_execution(
     ctx.logger.info('Connecting to workload manager..')
 
     if not simulate:
-        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L83')
         wm_type = config['workload_manager']
         ctx.logger.info(' - manager: {wm_type}'.format(wm_type=wm_type))
-        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L86')
+        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L85')
 
         wm = WorkloadManager.factory(wm_type)
         if not wm:
@@ -93,8 +92,10 @@ def configure_execution(
                 "' not supported.")
 
         if 'credentials' in ctx.instance.runtime_properties:
+            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L95')
             credentials = ctx.instance.runtime_properties['credentials']
         try:
+            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L98')
             client = SshClient(credentials)
         except Exception as exp:
             raise NonRecoverableError(
