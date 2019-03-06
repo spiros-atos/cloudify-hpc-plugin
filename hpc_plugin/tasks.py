@@ -95,7 +95,7 @@ def configure_execution(
         try:
             ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L96')
             ctx.logger.info('credentials = ' + str(credentials))
-            client = SshClient(credentials, ctx.logger)
+            client = SshClient(credentials)
             ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L98')
         except Exception as exp:
             raise NonRecoverableError(
@@ -160,7 +160,7 @@ def cleanup_execution(
 
         if 'credentials' in ctx.instance.runtime_properties:
             credentials = ctx.instance.runtime_properties['credentials']
-        client = SshClient(credentials, ctx.logger)
+        client = SshClient(credentials)
         client.execute_shell_command(
             'rm -r ' + workdir,
             wait_result=True)
@@ -406,7 +406,7 @@ def deploy_job(script,
 
     # Execute the script and manage the output
     success = False
-    client = SshClient(credentials, ctx.logger)
+    client = SshClient(credentials)
     if wm._create_shell_script(client,
                                name,
                                ctx.get_resource(script),
@@ -453,7 +453,7 @@ def send_job(job_options, **kwargs):  # pylint: disable=W0613
     if not simulate:
         workdir = ctx.instance.runtime_properties['workdir']
         wm_type = ctx.instance.runtime_properties['workload_manager']
-        client = SshClient(ctx.instance.runtime_properties['credentials'], ctx.logger)
+        client = SshClient(ctx.instance.runtime_properties['credentials'])
 
         wm = WorkloadManager.factory(wm_type)
         if not wm:
@@ -509,7 +509,7 @@ def cleanup_job(job_options, skip, **kwargs):  # pylint: disable=W0613
             workdir = ctx.instance.runtime_properties['workdir']
             wm_type = ctx.instance.runtime_properties['workload_manager']
 
-            client = SshClient(ctx.instance.runtime_properties['credentials'], ctx.logger)
+            client = SshClient(ctx.instance.runtime_properties['credentials'])
 
             wm = WorkloadManager.factory(wm_type)
             if not wm:
@@ -559,7 +559,7 @@ def stop_job(job_options, **kwargs):  # pylint: disable=W0613
         if not simulate:
             workdir = ctx.instance.runtime_properties['workdir']
             wm_type = ctx.instance.runtime_properties['workload_manager']
-            client = SshClient(ctx.instance.runtime_properties['credentials'], ctx.logger)
+            client = SshClient(ctx.instance.runtime_properties['credentials'])
 
             wm = WorkloadManager.factory(wm_type)
             if not wm:
@@ -611,7 +611,7 @@ def publish(publish_list, **kwargs):
         published = True
         if not simulate:
             workdir = ctx.instance.runtime_properties['workdir']
-            client = SshClient(ctx.instance.runtime_properties['credentials'], ctx.logger)
+            client = SshClient(ctx.instance.runtime_properties['credentials'])
 
             for publish_item in publish_list:
                 if not published:

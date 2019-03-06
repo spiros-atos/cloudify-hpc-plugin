@@ -51,11 +51,8 @@ logging.getLogger('paramiko.transport').addHandler(NullHandler())
 class SshClient(object):
     """Represents a ssh client"""
     _client = None
-    _logger = None
 
-    def __init__(self, credentials, logger):
-        self._logger = logger
-
+    def __init__(self, credentials):
         # Build a tunnel if necessary
         self._tunnel = None
         self._host = credentials['host']
@@ -102,7 +99,6 @@ class SshClient(object):
 
         while True:
             try:
-                self._logger.info('SSH.PY::__INIT__ L105: trying to connect. retries = ' + str(retries))
                 self._client.connect(
                     self._host,
                     port=self._port,
@@ -112,16 +108,13 @@ class SshClient(object):
                     look_for_keys=False
                 )
             except ssh_exception.SSHException as err:
-                self._logger.info('SSH.PY::__INIT__ L115')
                 if (retries > 0 and 
                     str(err) == "Error reading SSH protocol banner"):
-                    self._logger.info('SSH.PY::__INIT__ L118')
                     retries -= 1
                     logging.getLogger("paramiko").\
                         warning("Retrying SSH connection: " + str(err))
                     continue
                 else:
-                    self._logger.info('SSH.PY::__INIT__ L124')
                     raise err
             break
 
