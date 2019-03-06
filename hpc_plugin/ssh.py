@@ -86,8 +86,6 @@ class SshClient(object):
                 key_file,
                 password=private_key_password)
 
-        self._logger.info('SSH.PY::__INIT__ L91')
-
         # This switch allows to execute commands in a login shell.
         # By default commands are executed on the remote host.
         # See discussions in the following threads:
@@ -104,12 +102,7 @@ class SshClient(object):
 
         while True:
             try:
-                self._logger.info('SSH.PY::__INIT__ L107')
-                self._logger.info(str(self._host))
-                self._logger.info(str(self._port))
-                self._logger.info(str(credentials['user']))
-                self._logger.info(str(private_key))
-                self._logger.info(str(passwd))
+                self._logger.info('SSH.PY::__INIT__ L105: trying to connect. retries = ' + retries)
                 self._client.connect(
                     self._host,
                     port=self._port,
@@ -119,16 +112,16 @@ class SshClient(object):
                     look_for_keys=False
                 )
             except ssh_exception.SSHException as err:
-                self._logger.info('SSH.PY::__INIT__ L122')
+                self._logger.info('SSH.PY::__INIT__ L115')
                 if (retries > 0 and 
                     str(err) == "Error reading SSH protocol banner"):
-                    self._logger.info('SSH.PY::__INIT__ L125')
+                    self._logger.info('SSH.PY::__INIT__ L118')
                     retries -= 1
                     logging.getLogger("paramiko").\
                         warning("Retrying SSH connection: " + str(err))
                     continue
                 else:
-                    self._logger.info('SSH.PY::__INIT__ L131')
+                    self._logger.info('SSH.PY::__INIT__ L124')
                     raise err
             break
 
