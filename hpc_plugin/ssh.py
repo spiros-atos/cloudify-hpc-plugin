@@ -102,7 +102,7 @@ class SshClient(object):
 
         while True:
             try:
-                self._logger.info('SSH.PY::__INIT__ L105: trying to connect. retries = ' + retries)
+                self._logger.info('SSH.PY::__INIT__ L105: trying to connect. retries = ' + str(retries))
                 self._client.connect(
                     self._host,
                     port=self._port,
