@@ -19,6 +19,8 @@ primary_hpc:
       host: hazelhen.hww.de
       user: "xeuspimi"
       password: 'F1rst0n@01'
+      private_key: ''
+      private_key_file: '/home/linux/ATOSES_spiros/.ssh/id_rsa'
       # private_key: |
       #   -----BEGIN RSA PRIVATE KEY-----
       #   ***
