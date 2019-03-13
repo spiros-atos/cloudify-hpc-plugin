@@ -79,9 +79,13 @@ class SshClient(object):
                 private_key_password = credentials['private_key_password']
             else:
                 private_key_password = None
-            private_key = RSAKey.from_private_key(
-                key_file,
-                password=private_key_password)
+            # private_key = RSAKey.from_private_key(
+            #     key_file,
+            #     password=private_key_password)
+
+            private_key_file = credentials['private_key_file']
+            # private_key = RSAKey.from_private_key_file(r'/home/linux/ATOSES_spiros/.ssh/id_rsa')
+            private_key = RSAKey.from_private_key_file(private_key_file)
 
         # This switch allows to execute commands in a login shell.
         # By default commands are executed on the remote host.
