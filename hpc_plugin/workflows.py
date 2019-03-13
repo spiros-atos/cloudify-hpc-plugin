@@ -382,8 +382,12 @@ class Monitor(object):
 def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
 
+    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L385')
+
     root_nodes, job_instances_map = build_graph(ctx.nodes)
+    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L388')
     monitor = Monitor(job_instances_map, ctx.logger)
+    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L390')
 
     # Execution of first job instances
     tasks_list = []

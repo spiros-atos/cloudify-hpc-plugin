@@ -316,7 +316,7 @@ def bootstrap_job(
     if not deployment:
         return
 
-    ctx.logger.info('Bootstraping job..')
+    ctx.logger.info('Bootstrapping job..')
     simulate = ctx.instance.runtime_properties['simulate']
 
     if not simulate and 'bootstrap' in deployment:
@@ -335,9 +335,9 @@ def bootstrap_job(
                 name,
                 ctx.logger,
                 skip_cleanup):
-            ctx.logger.info('..job bootstraped')
+            ctx.logger.info('..job bootstrapped')
         else:
-            ctx.logger.error('Job not bootstraped')
+            ctx.logger.error('Job not bootstrapped')
             raise NonRecoverableError("Bootstrap failed")
     else:
         if 'bootstrap' in deployment:
