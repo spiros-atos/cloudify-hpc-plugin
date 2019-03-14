@@ -205,6 +205,7 @@ def start_monitoring_hpc(
                 'cache-control': "no-cache",
             }
 
+            ctx.logger.info('TASKS.PY::START_MONITORING_HPC() L208')
             response = requests.request(
                 "POST", url, data=payload, headers=headers)
 

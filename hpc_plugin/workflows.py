@@ -351,6 +351,7 @@ class Monitor(object):
             return
 
         # then look for the status of the instances through its name
+        logger.info('WORKFLOWS.PY::MONITOR::UPDATE_STATUS() L354')
         states = self.jobs_requester.request(monitor_jobs, self.logger)
 
         # finally set job status

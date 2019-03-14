@@ -209,7 +209,7 @@ class Torque(WorkloadManager):
     @staticmethod
     def _get_states_detailed(workdir, credentials, job_names, logger):
 
-        logger.info('TORQUE.PY L212')
+        logger.info('TORQUE.PY::_GET_STATES_DETAILED() L212')
 
         """
         Get job states by job names
