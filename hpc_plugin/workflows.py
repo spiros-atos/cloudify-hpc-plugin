@@ -382,8 +382,6 @@ class Monitor(object):
 def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
 
-    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L385')
-
     root_nodes, job_instances_map = build_graph(ctx.nodes)
     ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L388')
     monitor = Monitor(job_instances_map, ctx.logger)
@@ -398,6 +396,9 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
 
     # Monitoring and next executions loop
     while monitor.is_something_executing() and not api.has_cancel_request():
+
+        ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L400')
+
         # Monitor the infrastructure
         monitor.update_status()
         exec_nodes_finished = []
