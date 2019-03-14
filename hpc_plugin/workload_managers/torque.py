@@ -208,9 +208,6 @@ class Torque(WorkloadManager):
 
     @staticmethod
     def _get_states_detailed(workdir, credentials, job_names, logger):
-
-        logger.info('TORQUE.PY::_GET_STATES_DETAILED() L212')
-
         """
         Get job states by job names
 
@@ -229,6 +226,9 @@ class Torque(WorkloadManager):
         call = "echo {} | xargs -n 1 qselect -N".format(
             shlex_quote(' '.join(map(shlex_quote, job_names))))
 
+        logger.info('TORQUE.PY::_GET_STATES_DETAILED() L232')
+        logger.info('call = ' + str(call))
+
         client = SshClient(credentials)
 
         output, exit_code = client.execute_shell_command(
@@ -239,8 +239,12 @@ class Torque(WorkloadManager):
         if not job_ids:
             return {}
 
+        logger.info('job_ids = ' + str(job_ids))
+
         # get detailed information about jobs
         call = "qstat -f {}".format(' '.join(map(str, job_ids)))
+
+        logger.info('call = ' + str(call))
 
         output, exit_code = client.execute_shell_command(
             call,
@@ -249,6 +253,7 @@ class Torque(WorkloadManager):
         client.close_connection()
         try:
             job_states = Torque._parse_qstat_detailed(output)
+            logger.info('job_states = ' + str(job_states))
         except SyntaxError as e:
             logger.warning(
                 "cannot parse state response for job ids=[{}]".format(
