@@ -383,7 +383,6 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
 
     root_nodes, job_instances_map = build_graph(ctx.nodes)
-    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L388')
     monitor = Monitor(job_instances_map, ctx.logger)
     ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L390')
 
@@ -405,6 +404,10 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
         new_exec_nodes = []
         for node_name, exec_node in monitor.get_executions_iterator():
             if exec_node.check_status():
+                ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L407')
+                ctx.logger.info('exec_node.completed = ' + str(exec_node.completed))
+                ctx.logger.info('exec_node.failed = ' + str(exec_node.failed))
+                ctx.logger.info('exec_node.status = ' + str(exec_node.status))
                 if exec_node.completed:
                     exec_node.clean_all_instances()
                     exec_nodes_finished.append(node_name)
