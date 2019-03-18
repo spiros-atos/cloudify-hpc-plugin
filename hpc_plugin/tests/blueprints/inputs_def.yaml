@@ -43,13 +43,13 @@ inputs:
         order: 120
         type: string
 
-  # monitor_entrypoint:
-  #   default:
-  #     INPUT:
-  #       name: Monitor Entrypoint (not used)
-  #       description: Monitor entrypoint IP (Not used)
-  #       default: ""
-  #       null: true
-  #       advanced: true
-  #       order: 130
-  #       type: string
+  monitor_entrypoint:
+    default:
+      INPUT:
+        name: Monitor Entrypoint (not used)
+        description: Monitor entrypoint IP (Not used)
+        default: ""
+        null: true
+        advanced: true
+        order: 130
+        type: string

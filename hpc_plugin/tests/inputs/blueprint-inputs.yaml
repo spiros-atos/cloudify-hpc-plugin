@@ -36,4 +36,4 @@ hpc_wm_credentials: *id008
 
 # job_prefix: mso
 job_prefix: euxd
-# monitor_entrypoint: ''
+monitor_entrypoint: 'http://80.158.7.249:30003/graph'
