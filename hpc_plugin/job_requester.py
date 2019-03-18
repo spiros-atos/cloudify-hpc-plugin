@@ -55,8 +55,7 @@ class JobRequester(object):
                             settings['workdir'],
                             settings['config'],
                             settings['names'],
-                            logger
-                        )
+                            logger)
                     else:
                         partial_states = self._no_states(
                             host,

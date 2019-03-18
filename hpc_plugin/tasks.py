@@ -33,6 +33,7 @@ def preconfigure_wm(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Get workload manager config from infrastructure """
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L36')
     ctx.logger.info('Preconfiguring workload manager..')
 
     if not simulate:
@@ -67,6 +68,8 @@ def preconfigure_wm(
     else:
         ctx.logger.warning('Workload manager simulated')
 
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM *** END *** L71')
+
 
 @operation
 def configure_execution(
@@ -77,6 +80,7 @@ def configure_execution(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Creates the working directory for the execution """
+    ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L81')
     ctx.logger.info('Connecting to workload manager..')
 
     if not simulate:
@@ -134,6 +138,8 @@ def configure_execution(
         ctx.instance.runtime_properties['workdir'] = "simulation"
         ctx.logger.warning('Workload manager connection simulated')
 
+    ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION *** END *** L141')
+
 
 @operation
 def cleanup_execution(
@@ -143,7 +149,9 @@ def cleanup_execution(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Cleans execution working directory """
+    ctx.logger.info('TASKS.PY::CLEANUP_EXECUTION L148')
     if skip:
+        ctx.logger.info('TASKS.PY::CLEANUP_EXECUTION *** SKIP *** L154')
         return
 
     ctx.logger.info('Cleaning up...')
@@ -168,6 +176,8 @@ def cleanup_execution(
     else:
         ctx.logger.warning('clean up simulated.')
 
+    ctx.logger.info('TASKS.PY::CLEANUP_EXECUTION *** END *** L179')
+
 
 @operation
 def start_monitoring_hpc(
@@ -179,6 +189,7 @@ def start_monitoring_hpc(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Starts monitoring using the Monitor orchestrator """
+    ctx.logger.info('TASKS.PY::START_MONITORING_HPC L185')
     external_monitor_entrypoint = None  # FIXME: external monitor disabled
     if external_monitor_entrypoint:
         ctx.logger.info('Starting infrastructure monitor..')
@@ -216,6 +227,8 @@ def start_monitoring_hpc(
         else:
             ctx.logger.warning('monitor simulated')
 
+    ctx.logger.info('TASKS.PY::START_MONITORING_HPC *** END *** L230')
+
 
 @operation
 def stop_monitoring_hpc(
@@ -227,6 +240,7 @@ def stop_monitoring_hpc(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Stops monitoring using the Monitor Orchestrator """
+    ctx.logger.info('TASKS.PY::START_MONITORING_HPC L234')
     external_monitor_entrypoint = None  # FIXME: external monitor disabled
     if external_monitor_entrypoint:
         ctx.logger.info('Stoping infrastructure monitor..')
@@ -267,6 +281,8 @@ def stop_monitoring_hpc(
         else:
             ctx.logger.warning('monitor simulated')
 
+    ctx.logger.info('TASKS.PY::START_MONITORING_HPC *** END *** L284')
+
 
 @operation
 def preconfigure_job(
@@ -281,6 +297,7 @@ def preconfigure_job(
         simulate,
         **kwargs):  # pylint: disable=W0613
     """ Match the job with its credentials """
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_JOB L289')
     ctx.logger.info('Preconfiguring job..')
 
     if 'credentials' not in ctx.target.instance.runtime_properties:
@@ -307,6 +324,7 @@ def preconfigure_job(
     ctx.source.instance.runtime_properties['workdir'] = \
         ctx.target.instance.runtime_properties['workdir']
 
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_JOB *** END *** L327')
 
 @operation
 def bootstrap_job(
@@ -314,6 +332,7 @@ def bootstrap_job(
         skip_cleanup,
         **kwarsgs):  # pylint: disable=W0613
     """Bootstrap a job with a script that receives SSH credentials as imput"""
+    ctx.logger.info('TASKS.PY::BOOTSTRAP_JOB L323')
     if not deployment:
         return
 
@@ -346,11 +365,15 @@ def bootstrap_job(
         else:
             ctx.logger.info('..nothing to bootstrap')
 
+    ctx.logger.info('TASKS.PY::BOOTSTRAP_JOB L368')
+
 
 @operation
 def revert_job(deployment, skip_cleanup, **kwarsgs):  # pylint: disable=W0613
     """Revert a job using a script that receives SSH credentials as input"""
+    ctx.logger.info('TASKS.PY::REVERT_JOB L360')
     if not deployment:
+        ctx.logger.info('TASKS.PY::REVERT_JOB *** SKIP *** L376')
         return
 
     ctx.logger.info('Reverting job..')
@@ -385,6 +408,8 @@ def revert_job(deployment, skip_cleanup, **kwarsgs):  # pylint: disable=W0613
     except KeyError:
         # The job wasn't configured properly, so there was no bootstrap
         ctx.logger.warning('Job was not reverted as it was not configured')
+
+    ctx.logger.info('TASKS.PY::REVERT_JOB *** END *** L412')
 
 
 def deploy_job(script,
@@ -444,6 +469,7 @@ def deploy_job(script,
 @operation
 def send_job(job_options, **kwargs):  # pylint: disable=W0613
     """ Sends a job to the workload manager """
+    ctx.logger.info('TASKS.PY::SEND_JOB L455')
     simulate = ctx.instance.runtime_properties['simulate']
 
     name = kwargs['name']
@@ -488,9 +514,12 @@ def send_job(job_options, **kwargs):  # pylint: disable=W0613
 
     ctx.instance.runtime_properties['job_name'] = name
 
+    ctx.logger.info('TASKS.PY::SEND_JOB *** END *** L517')
+
 
 @operation
 def cleanup_job(job_options, skip, **kwargs):  # pylint: disable=W0613
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L503')
     """Clean the aux files of the job"""
     if skip:
         return
@@ -541,9 +570,12 @@ def cleanup_job(job_options, skip, **kwargs):  # pylint: disable=W0613
         ctx.logger.error(
             'Something happend when trying to clean up: ' + exp.message)
 
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L573')
+
 
 @operation
 def stop_job(job_options, **kwargs):  # pylint: disable=W0613
+    ctx.logger.info('TASKS.PY::STOP_JOB L557')
     """ Stops a job in the workload manager """
     try:
         simulate = ctx.instance.runtime_properties['simulate']
@@ -593,9 +625,12 @@ def stop_job(job_options, **kwargs):  # pylint: disable=W0613
         ctx.logger.error(
             'Something happend when trying to stop: ' + exp.message)
 
+    ctx.logger.info('TASKS.PY::STOP_JOB L628')
+
 
 @operation
 def publish(publish_list, **kwargs):
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L610')
     """ Publish the job outputs """
     try:
         simulate = ctx.instance.runtime_properties['simulate']
@@ -641,3 +676,5 @@ def publish(publish_list, **kwargs):
         print(traceback.format_exc())
         ctx.logger.error(
             'Cannot publish: ' + exp.message)
+
+    ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L680')
