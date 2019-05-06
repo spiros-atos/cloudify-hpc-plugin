@@ -113,6 +113,9 @@ class WorkloadManager(object):
         if workload_manager == "BASH":
             from bash import Bash
             return Bash()
+        if workload_manager == "K8S":
+            from k8s import K8S
+            return K8s()
         return None
 
     def submit_job(self,

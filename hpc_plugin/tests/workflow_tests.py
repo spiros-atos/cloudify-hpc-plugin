@@ -443,7 +443,7 @@ class TestPlugin(unittest.TestCase):
                                       ],
                    inputs='set_inputs')
     def test_k8s(self, cfy_local):
-        """ Single SBATCH Job Blueprint """
+        """ Single K8S Job Blueprint """
         cfy_local.execute('install', task_retries=0)
         # cfy_local.execute('run_jobs', task_retries=0)
         cfy_local.execute('uninstall', task_retries=0)
