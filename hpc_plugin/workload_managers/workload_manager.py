@@ -114,7 +114,7 @@ class WorkloadManager(object):
             from bash import Bash
             return Bash()
         if workload_manager == "K8S":
-            from k8s import K8S
+            from k8s import K8s
             return K8s()
         return None
 

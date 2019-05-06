@@ -3,7 +3,7 @@ from workload_manager import WorkloadManager
 from hpc_plugin.utilities import shlex_quote
 
 
-class Torque(WorkloadManager):
+class K8s(WorkloadManager):
     """ Holds the K8s functions """
 
     def _build_container_script(self, name, job_settings, logger):
