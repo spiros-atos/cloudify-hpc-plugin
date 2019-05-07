@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ Holds the plugin tasks """
+import pdb
+
 
 import traceback
 import requests
@@ -82,6 +84,8 @@ def configure_execution(
     """ Creates the working directory for the execution """
     ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L81')
     ctx.logger.info('Connecting to workload manager..')
+
+#    pdb.set_trace()
 
     if not simulate:
         wm_type = config['workload_manager']
