@@ -1,3 +1,6 @@
+import pdb
+import os
+
 import string
 import random
 from datetime import datetime
@@ -304,13 +307,12 @@ class WorkloadManager(object):
         base_name = workdir
         # while self._exists_path(ssh_client, base_dir + "/" + workdir):
         #     workdir = self._get_random_name(base_name)
+        full_path = base_dir + "/" + workdir
         while os.path.exists(full_path):
             workdir = self._get_random_name(base_name)
 
-        full_path = base_dir + "/" + workdir
-
         try:
-            os.path.mkdir(full_path)
+            os.mkdir(full_path)
             return full_path
         except Exception as exp:
             logger.warning("Failed to create '" + full_path + "' directory.")

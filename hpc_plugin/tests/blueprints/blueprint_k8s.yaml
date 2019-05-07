@@ -37,6 +37,7 @@ node_templates:
       external_monitor_entrypoint: { get_input: monitor_entrypoint }
       job_prefix: { get_input: job_prefix }
       workdir_prefix: "single_k8s"
+      base_dir: '/home/linux/ATOSES_spiros/cloudify-hpc-plugin/workdirs'
     relationships:
     - type: wm_contained_in
       target: my_server

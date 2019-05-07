@@ -14,6 +14,8 @@
 # limitations under the License.
 """ Holds the plugin workflows """
 
+import pdb
+
 import sys
 import time
 
@@ -382,6 +384,8 @@ class Monitor(object):
 @workflow
 def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
+
+    pdb.set_trace()
 
     root_nodes, job_instances_map = build_graph(ctx.nodes)
     monitor = Monitor(job_instances_map, ctx.logger)

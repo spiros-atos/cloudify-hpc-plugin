@@ -15,7 +15,6 @@
 """ Holds the plugin tasks """
 import pdb
 
-
 import traceback
 import requests
 from cloudify import ctx
@@ -37,8 +36,6 @@ def preconfigure_wm(
     """ Get workload manager config from infrastructure """
     ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L36')
     ctx.logger.info('Preconfiguring workload manager..')
-
-    pdb.set_trace()
 
     if not simulate:
         credentials_modified = False
@@ -87,8 +84,6 @@ def configure_execution(
     ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L81')
     ctx.logger.info('Connecting to workload manager..')
 
-#    pdb.set_trace()
-
     if not simulate:
         wm_type = config['workload_manager']
         ctx.logger.info(' - manager: {wm_type}'.format(wm_type=wm_type))
@@ -136,7 +131,7 @@ def configure_execution(
             workdir = wm.create_new_workdir(client, base_dir, prefix, ctx.logger)
             client.close_connection()
         else:
-            workdir = k8s_create_new_workdir(base_dir, prefix, ctx.logger)
+            workdir = wm.k8s_create_new_workdir(base_dir, prefix, ctx.logger)
 
         if workdir is None:
             raise NonRecoverableError(
