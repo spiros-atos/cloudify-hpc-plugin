@@ -8,38 +8,113 @@ imports:
     - inputs_def.yaml
 
 node_templates:
-    hpc_wm:
-        type: hpc.nodes.WorkloadManager
-        properties:
-            config: { get_input: hpc_wm_config }
-            credentials: { get_input: hpc_wm_credentials }
-            external_monitor_entrypoint: { get_input: monitor_entrypoint }
-            job_prefix: { get_input: job_prefix }
-            # base_dir: { get_input: "hpc_base_dir" }
-            # monitor_period: 15
-            base_dir: '~'
-            monitor_period: 2
-            skip_cleanup: true
-            # simulate: True  # COMMENT to test against a real HPC
-            workdir_prefix: "k8s"
 
-    single_job:
-        type: hpc.nodes.Job
-        properties:
-            job_options:
-                type: 'K8S'
-                # command: "touch.script single.test"
-                command: "touch.script"
-            # deployment:
-            #     bootstrap: 'scripts/bootstrap_sbatch_example.sh'
-            #     revert: 'scripts/revert_sbatch_example.sh'
-            #     inputs:
-            #         - 'single'
-                    # - { get_input: partition_name }
-            skip_cleanup: True
-        relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+  hpc_wm:
+      type: hpc.nodes.WorkloadManager
+      properties:
+        config: { get_input: hpc_wm_config }
+        credentials: { get_input: hpc_wm_credentials }
+        external_monitor_entrypoint: { get_input: monitor_entrypoint }
+        job_prefix: { get_input: job_prefix }
+        # base_dir: { get_input: "hpc_base_dir" }
+        # monitor_period: 15
+        # base_dir: '~'
+        # monitor_period: 2
+        skip_cleanup: true
+        # simulate: True  # COMMENT to test against a real HPC
+        workdir_prefix: "k8s"
+
+  kubernetes_wm:
+    type: hpc.nodes.WorkloadManager
+    properties:
+      config: { get_input: cloud_wm_config }
+      credentials: { get_input: cloud_wm_credentials }
+      external_monitor_entrypoint: { get_input: monitor_entrypoint }
+      job_prefix: { get_input: job_prefix }
+      workdir_prefix: "single_k8s"
+    relationships:
+    - type: wm_contained_in
+      target: my_server
+
+  hpc_job:
+    type: hpc.nodes.SingularityJob
+    properties:
+      job_options: 
+        pre:
+        - { get_input: mpi_load_command }
+        - { get_input: singularity_load_command }
+        partition: { get_input: partition_name }
+        image: {concat: [{ get_input: singularity_image_storage },'/',{ get_input: singularity_image_filename }] }
+        volumes:
+        - { get_input: scratch_voulume_mount_point }
+        - { get_input: singularity_mount_point }
+        command: 'touch single.test'
+        nodes: 1
+        tasks: 1
+        tasks_per_node: 1
+        max_time: '00:01:00'
+      deployment:
+        bootstrap: 'scripts/singularity_bootstrap_example.sh'
+        #revert: 'scripts/singularity_revert_example.sh'
+        inputs:
+          - { get_input: singularity_image_storage }
+          - { get_input: singularity_image_filename }
+          - { get_input: singularity_image_uri }
+      skip_cleanup: True
+    relationships:
+    - type: job_managed_by_wm
+      target: hpc_wm
+
+  vm_job:
+    type: hpc.nodes.Job
+    properties:
+      job_options:
+        type: 'SHELL'
+        command: "touch single_vm.test"
+      publish:
+      - dataset: { get_input: ckan_outputs_dataset }
+        file_path: "$CURRENT_WORKDIR/single_vm.test"
+        name: "single_vm"
+        description: "output test vm"
+    relationships:
+    - type: job_managed_by_wm
+      target: kubernetes_wm
+
+  my_server:
+    type: cloudify.kubernetes.nodes.Master
+    properties:
+      configuration:
+        api_options:
+          host: 'https://192.168.1.11:6443'
+          api_key: { get_secret: kubernetes_token }
+          debug: false
+          verify_ssl: false
+    # relationships:
+    # - type: cloudify.openstack.server_connected_to_keypair
+    #   target: keypair
+    # - type: cloudify.relationships.connected_to
+    #   target: mso4sc-network
+
+    #- type: cloudify.openstack.server_connected_to_floating_ip
+    #  target: my_floating_ip
+
+    # single_job:
+    #     type: hpc.nodes.Job
+    #     properties:
+    #         job_options:
+    #             type: 'K8S'
+    #             # command: "touch.script single.test"
+    #             command: "touch.script"
+    #         # deployment:
+    #         #     bootstrap: 'scripts/bootstrap_sbatch_example.sh'
+    #         #     revert: 'scripts/revert_sbatch_example.sh'
+    #         #     inputs:
+    #         #         - 'single'
+    #                 # - { get_input: partition_name }
+    #         skip_cleanup: True
+    #     relationships:
+    #         - type: job_managed_by_wm
+    #           target: hpc_wm
 
 outputs:
     single_job_name:
