@@ -38,6 +38,8 @@ def preconfigure_wm(
     ctx.logger.info('TASKS.PY::PRECONFIGURE_WM L36')
     ctx.logger.info('Preconfiguring workload manager..')
 
+    pdb.set_trace()
+
     if not simulate:
         credentials_modified = False
 
@@ -97,6 +99,9 @@ def configure_execution(
                 "Workload Manager '" +
                 wm_type +
                 "' not supported.")
+
+	if wm_type == 'K8S':
+	    return
 
         if 'credentials' in ctx.instance.runtime_properties:
             credentials = ctx.instance.runtime_properties['credentials']

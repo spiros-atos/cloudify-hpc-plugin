@@ -28,8 +28,12 @@ node_templates:
   kubernetes_wm:
     type: hpc.nodes.WorkloadManager
     properties:
-      config: '' # { get_input: cloud_wm_config }
-      credentials: '' # { get_input: cloud_wm_credentials }
+      config: # { get_input: cloud_wm_config }
+        workload_manager: 'K8S'
+      credentials: # { get_input: cloud_wm_credentials }
+        host: 'https://192.168.1.11'
+        port: 6443
+#        user: ''
       external_monitor_entrypoint: { get_input: monitor_entrypoint }
       job_prefix: { get_input: job_prefix }
       workdir_prefix: "single_k8s"

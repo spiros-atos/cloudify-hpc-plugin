@@ -445,7 +445,7 @@ class TestPlugin(unittest.TestCase):
     def test_k8s(self, cfy_local):
         """ Single K8S Job Blueprint """
         cfy_local.execute('install', task_retries=0)
-        # cfy_local.execute('run_jobs', task_retries=0)
+        cfy_local.execute('run_jobs', task_retries=0)
         cfy_local.execute('uninstall', task_retries=0)
 
         # extract single node instance
