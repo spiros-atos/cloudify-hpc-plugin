@@ -280,7 +280,10 @@ class WorkloadManager(object):
             call,
             workdir=workdir)
 
-    def create_new_workdir(self, ssh_client, base_dir, base_name, logger):
+    # def create_new_workdir(self, ssh_client, base_dir, base_name, logger):
+    def create_new_workdir(self, ssh_client = None, base_dir = '', 
+            base_name = '', logger = None):
+
         workdir = self._get_time_name(base_name)
 
         # we make sure that the workdir does not exists
