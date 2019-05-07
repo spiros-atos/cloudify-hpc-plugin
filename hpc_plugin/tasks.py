@@ -100,41 +100,43 @@ def configure_execution(
                 wm_type +
                 "' not supported.")
 
-	if wm_type == 'K8S':
-	    return
+    	if wm_type != 'K8S':
 
-        if 'credentials' in ctx.instance.runtime_properties:
-            credentials = ctx.instance.runtime_properties['credentials']
-        try:
-            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L96')
-            client = SshClient(credentials)
-            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L98')
-        except Exception as exp:
-            raise NonRecoverableError(
-                "Failed trying to connect to workload manager: " + str(exp))
+            if 'credentials' in ctx.instance.runtime_properties:
+                credentials = ctx.instance.runtime_properties['credentials']
+            try:
+                ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L96')
+                client = SshClient(credentials)
+                ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L98')
+            except Exception as exp:
+                raise NonRecoverableError(
+                    "Failed trying to connect to workload manager: " + str(exp))
 
-        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L103')
-        # TODO: use command according to wm
-        _, exit_code = client.execute_shell_command(
-            'uname',
-            wait_result=True)
+            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L103')
+            # TODO: use command according to wm
+            _, exit_code = client.execute_shell_command(
+                'uname',
+                wait_result=True)
 
-        ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L109')
+            ctx.logger.info('TASKS.PY::CONFIGURE_EXECUTION L109')
 
-        if exit_code is not 0:
-            client.close_connection()
-            raise NonRecoverableError(
-                "Failed executing on the workload manager: exit code " +
-                str(exit_code))
+            if exit_code is not 0:
+                client.close_connection()
+                raise NonRecoverableError(
+                    "Failed executing on the workload manager: exit code " +
+                    str(exit_code))
 
-        ctx.instance.runtime_properties['login'] = exit_code is 0
+            ctx.instance.runtime_properties['login'] = exit_code is 0
 
         prefix = workdir_prefix
         if workdir_prefix is "":
             prefix = ctx.blueprint.id
 
         workdir = wm.create_new_workdir(client, base_dir, prefix, ctx.logger)
-        client.close_connection()
+
+        if wm_type != 'K8S':
+            client.close_connection()
+
         if workdir is None:
             raise NonRecoverableError(
                 "failed to create the working directory, base dir: " +
