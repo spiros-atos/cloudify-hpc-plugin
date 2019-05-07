@@ -132,10 +132,11 @@ def configure_execution(
         if workdir_prefix is "":
             prefix = ctx.blueprint.id
 
-        workdir = wm.create_new_workdir(client, base_dir, prefix, ctx.logger)
-
         if wm_type != 'K8S':
+            workdir = wm.create_new_workdir(client, base_dir, prefix, ctx.logger)
             client.close_connection()
+        else:
+            workdir = k8s_create_new_workdir(base_dir, prefix, ctx.logger)
 
         if workdir is None:
             raise NonRecoverableError(

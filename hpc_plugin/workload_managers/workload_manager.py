@@ -280,10 +280,7 @@ class WorkloadManager(object):
             call,
             workdir=workdir)
 
-    # def create_new_workdir(self, ssh_client, base_dir, base_name, logger):
-    def create_new_workdir(self, ssh_client = None, base_dir = '', 
-            base_name = '', logger = None):
-
+    def create_new_workdir(self, ssh_client, base_dir, base_name, logger):
         workdir = self._get_time_name(base_name)
 
         # we make sure that the workdir does not exists
@@ -298,6 +295,25 @@ class WorkloadManager(object):
         else:
             logger.warning("Failed to create '" + base_dir +
                            "/" + workdir + "' directory.")
+            return None
+
+    def k8s_create_new_workdir(self, base_dir, base_name, logger):
+        workdir = self._get_time_name(base_name)
+
+        # we make sure that the workdir does not exists
+        base_name = workdir
+        # while self._exists_path(ssh_client, base_dir + "/" + workdir):
+        #     workdir = self._get_random_name(base_name)
+        while os.path.exists(full_path):
+            workdir = self._get_random_name(base_name)
+
+        full_path = base_dir + "/" + workdir
+
+        try:
+            os.path.mkdir(full_path)
+            return full_path
+        except Exception as exp:
+            logger.warning("Failed to create '" + full_path + "' directory.")
             return None
 
 #   ################ ABSTRACT METHODS ################
