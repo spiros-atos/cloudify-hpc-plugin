@@ -15,6 +15,7 @@
 """ Holds the plugin tasks """
 import pdb
 import os
+import subprocess
 
 import traceback
 import requests
@@ -492,7 +493,7 @@ def deploy_job(script,
                         workdir=workdir):
                     logger.warning("failed removing bootstrap script")
             else:   # k8s
-                if not subprocess.call(["rm ", name])
+                if subprocess.call(["rm", name]):
                     logger.warning("failed removing bootstrap script")
 
     if wm_type != 'K8S':

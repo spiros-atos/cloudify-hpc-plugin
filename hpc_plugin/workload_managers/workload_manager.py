@@ -421,22 +421,10 @@ class WorkloadManager(object):
                 return False
 
         else: # k8s
-	    pdb.set_trace()
-
-#            create_call = "sudo chmod -R 777 " + workdir
-#            return_code = subprocess.call(create_call)
-
-#  	    os.chmod(workdir, 0o777)
             os.chdir(workdir)
 
-#            create_call = ["touch", name]
-#            return_code = subprocess.call(create_call)
-#  	    os.chmod(name, 0o777)
-
-	    #sudo echo "hello there" >> bootstrap_vm_job_kslwxh.sh
-
-#            create_call = 'echo \"hello there\" >> ' + name
-            create_call = 'echo ' + script_data + ' >> ' + name
+            create_call = 'echo \"' + script_data + '\" >> ' + name + \
+		"; chmod +x " + name
             return_code = subprocess.call(create_call, shell=True)
 
             if return_code is not 0:
