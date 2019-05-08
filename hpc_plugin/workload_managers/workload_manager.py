@@ -1,5 +1,6 @@
 import pdb
 import os
+import subprocess
 
 import string
 import random
@@ -406,16 +407,26 @@ class WorkloadManager(object):
 
         create_call = "echo \"" + script_data + "\" >> " + name + \
             "; chmod +x " + name
-        _, exit_code = ssh_client.execute_shell_command(
-            create_call,
-            workdir=workdir,
-            wait_result=True)
 
-        if exit_code is not 0:
-            logger.error(
-                "failed to create script: call '" + create_call +
-                "', exit code " + str(exit_code))
-            return False
+        if ssh_client:
+            _, exit_code = ssh_client.execute_shell_command(
+                create_call,
+                workdir=workdir,
+                wait_result=True)
+
+            if exit_code is not 0:
+                logger.error(
+                    "failed to create script: call '" + create_call +
+                    "', exit code " + str(exit_code))
+                return False
+
+        else: # k8s
+            return_code = subprocess.call(create_call)
+            if return_code is not 0:
+                logger.error(
+                    "failed to create script: call '" + create_call +
+                    "', exit code " + str(return_code))
+                return False
 
         return True
 

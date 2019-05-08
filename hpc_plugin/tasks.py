@@ -450,7 +450,12 @@ def deploy_job(script,
 
     # Execute the script and manage the output
     success = False
-    client = SshClient(credentials)
+
+    if wm_type != 'K8S':
+        client = SshClient(credentials)
+    else:
+        client = None
+
     if wm._create_shell_script(client,
                                name,
                                ctx.get_resource(script),
@@ -463,24 +468,27 @@ def deploy_job(script,
                 call += ' "' + str_input + '"'
             else:
                 call += ' ' + str_input
-        _, exit_code = client.execute_shell_command(
-            call,
-            workdir=workdir,
-            wait_result=True)
-        if exit_code is not 0:
-            logger.warning(
-                "failed to deploy job: call '" + call + "', exit code " +
-                str(exit_code))
-        else:
-            success = True
 
-        if not skip_cleanup:
-            if not client.execute_shell_command(
-                    "rm " + name,
-                    workdir=workdir):
-                logger.warning("failed removing bootstrap script")
+        if wm_type != 'K8S':
+            _, exit_code = client.execute_shell_command(
+                call,
+                workdir=workdir,
+                wait_result=True)
+            if exit_code is not 0:
+                logger.warning(
+                    "failed to deploy job: call '" + call + "', exit code " +
+                    str(exit_code))
+            else:
+                success = True
 
-    client.close_connection()
+            if not skip_cleanup:
+                if not client.execute_shell_command(
+                        "rm " + name,
+                        workdir=workdir):
+                    logger.warning("failed removing bootstrap script")
+
+    if wm_type != 'K8S':
+        client.close_connection()
 
     return success
 
