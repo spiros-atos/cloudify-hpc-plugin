@@ -75,6 +75,9 @@ node_templates:
   vm_job:
     type: hpc.nodes.Job
     properties:
+      deployment:
+        bootstrap: 'scripts/bootstrap_k8s_example.sh'
+        revert: 'scripts/revert_k8s_example.sh'
       job_options:
         type: 'SHELL'
         command: "touch single_vm.test"
