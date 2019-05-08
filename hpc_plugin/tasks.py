@@ -474,17 +474,25 @@ def deploy_job(script,
                 call,
                 workdir=workdir,
                 wait_result=True)
-            if exit_code is not 0:
-                logger.warning(
-                    "failed to deploy job: call '" + call + "', exit code " +
-                    str(exit_code))
-            else:
-                success = True
+        else:   # k8s
+            os.chdir(workdir)
+            exit_code = subprocess.call(call, shell=True)
 
-            if not skip_cleanup:
+        if exit_code is not 0:
+            logger.warning(
+                "failed to deploy job: call '" + call + "', exit code " +
+                str(exit_code))
+        else:
+            success = True
+
+        if not skip_cleanup:
+            if wm_type != 'K8S':
                 if not client.execute_shell_command(
                         "rm " + name,
                         workdir=workdir):
+                    logger.warning("failed removing bootstrap script")
+            else:   # k8s
+                if not subprocess.call(["rm ", name])
                     logger.warning("failed removing bootstrap script")
 
     if wm_type != 'K8S':
