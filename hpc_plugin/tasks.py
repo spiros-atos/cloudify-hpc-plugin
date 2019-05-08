@@ -14,6 +14,7 @@
 # limitations under the License.
 """ Holds the plugin tasks """
 import pdb
+import os
 
 import traceback
 import requests
@@ -174,11 +175,22 @@ def cleanup_execution(
 
         if 'credentials' in ctx.instance.runtime_properties:
             credentials = ctx.instance.runtime_properties['credentials']
-        client = SshClient(credentials)
-        client.execute_shell_command(
-            'rm -r ' + workdir,
-            wait_result=True)
-        client.close_connection()
+
+        if wm_type != 'K8S':
+            client = SshClient(credentials)
+            client.execute_shell_command(
+                'rm -r ' + workdir,
+                wait_result=True)
+            client.close_connection()
+        else:
+            try:
+                os.rmdir(workdir)
+            except Exception as exp:
+                print(traceback.format_exc())
+                ctx.logger.error(
+                    'Something happend when trying to clean up: ' + 
+                    exp.message)
+
         ctx.logger.info('..all clean.')
     else:
         ctx.logger.warning('clean up simulated.')
