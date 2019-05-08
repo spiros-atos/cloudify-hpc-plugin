@@ -405,10 +405,10 @@ class WorkloadManager(object):
             .replace("`", "\\`") \
             .replace('"', '\\"')
 
-        create_call = "echo \"" + script_data + "\" >> " + name + \
-            "; chmod +x " + name
-
         if ssh_client:
+            create_call = "echo \"" + script_data + "\" >> " + name + \
+                "; chmod +x " + name
+
             _, exit_code = ssh_client.execute_shell_command(
                 create_call,
                 workdir=workdir,
@@ -421,6 +421,10 @@ class WorkloadManager(object):
                 return False
 
         else: # k8s
+            os.chdir(workdir)
+            create_call = "sudo chmod -R 777 " + workdir + ";"
+            create_call +=  "echo \"hello-there\" >> " + name
+
             return_code = subprocess.call(create_call)
             if return_code is not 0:
                 logger.error(
