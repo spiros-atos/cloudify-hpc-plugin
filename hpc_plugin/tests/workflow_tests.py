@@ -432,14 +432,14 @@ class TestPlugin(unittest.TestCase):
                    resources_to_copy=[(os.path.join('blueprints',
                                                     'inputs_def.yaml'),
                                        './'),
-                                      # (os.path.join('blueprints', 'scripts',
-                                      #               'bootstrap_' +
-                                      #               'sbatch_example.sh'),
-                                      #  'scripts'),
-                                      # (os.path.join('blueprints', 'scripts',
-                                      #               'revert_' +
-                                      #               'sbatch_example.sh'),
-                                      #  'scripts')
+                                      (os.path.join('blueprints', 'scripts',
+                                                    'bootstrap_' +
+                                                    'k8s_example.sh'),
+                                       'scripts'),
+                                      (os.path.join('blueprints', 'scripts',
+                                                    'revert_' +
+                                                    'k8s_example.sh'),
+                                       'scripts')
                                       ],
                    inputs='set_inputs')
     def test_k8s(self, cfy_local):
