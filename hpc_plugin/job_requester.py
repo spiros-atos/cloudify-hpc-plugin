@@ -15,6 +15,8 @@
 
 """ Holds the functions that requests jobs information """
 
+import pdb
+
 import time
 import requests
 from threading import Lock
@@ -31,6 +33,8 @@ class JobRequester(object):
         def request(self, monitor_jobs, logger):
             """ Retrieves the status of every job"""
             states = {}
+
+	    pdb.set_trace()
 
             for host, settings in monitor_jobs.iteritems():
                 # Only get info when it is safe

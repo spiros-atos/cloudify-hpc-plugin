@@ -346,6 +346,7 @@ class Monitor(object):
                                 'period': job_instance.monitor_period
                             }
                     else:
+			pdb.set_trace()
                         job_instance.set_status('COMPLETED')
 
         # nothing to do if we don't have nothing to monitor
@@ -358,6 +359,7 @@ class Monitor(object):
 
         # finally set job status
         for inst_name, state in states.iteritems():
+	    pdb.set_trace()
             self.job_instances_map[inst_name].set_status(state)
 
         # We wait to slow down the loop

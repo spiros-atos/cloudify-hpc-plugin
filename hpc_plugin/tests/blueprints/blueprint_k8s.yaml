@@ -31,8 +31,9 @@ node_templates:
       config: # { get_input: cloud_wm_config }
         workload_manager: 'K8S'
       credentials: # { get_input: cloud_wm_credentials }
-        host: 'https://192.168.1.11'
-        port: 6443
+#        host: 'https://192.168.1.11'
+        host: ''
+#        port: 6443
 #        user: ''
       external_monitor_entrypoint: { get_input: monitor_entrypoint }
       job_prefix: { get_input: job_prefix }
@@ -91,7 +92,7 @@ node_templates:
     properties:
       configuration:
         api_options:
-          host: 'https://192.168.1.11:6443'
+#          host: 'https://192.168.1.11:6443'
 #          api_key: { get_secret: kubernetes_token }
           debug: false
           verify_ssl: false
