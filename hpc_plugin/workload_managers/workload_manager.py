@@ -150,36 +150,39 @@ class WorkloadManager(object):
         @rtype dictionary of strings
         @return Slurm's job name sent. None if an error arise.
         """
-        if not SshClient.check_ssh_client(ssh_client, logger):
-            return False
-
-        if is_singularity:
-            # generate script content for singularity
-            script_content = self._build_container_script(name,
-                                                          job_settings,
-                                                          logger)
-            if script_content is None:
+        if ssh_client:
+            if not SshClient.check_ssh_client(ssh_client, logger):
                 return False
 
-            if not self._create_shell_script(ssh_client,
-                                             name + ".script",
-                                             script_content,
-                                             logger,
-                                             workdir=workdir):
-                return False
+            if is_singularity:
+                # generate script content for singularity
+                script_content = self._build_container_script(name,
+                                                              job_settings,
+                                                              logger)
+                if script_content is None:
+                    return False
 
-            # @TODO: use more general type names (e.g., BATCH/INLINE, etc)
-            settings = {
-                "type": "SBATCH",
-                "command": name + ".script"
-            }
+                if not self._create_shell_script(ssh_client,
+                                                 name + ".script",
+                                                 script_content,
+                                                 logger,
+                                                 workdir=workdir):
+                    return False
 
-            if 'scale' in job_settings:
-                settings['scale'] = job_settings['scale']
-                if 'scale_max_in_parallel' in job_settings:
-                    settings['scale_max_in_parallel'] = \
-                        job_settings['scale_max_in_parallel']
-        else:
+                # @TODO: use more general type names (e.g., BATCH/INLINE, etc)
+                settings = {
+                    "type": "SBATCH",
+                    "command": name + ".script"
+                }
+
+                if 'scale' in job_settings:
+                    settings['scale'] = job_settings['scale']
+                    if 'scale_max_in_parallel' in job_settings:
+                        settings['scale_max_in_parallel'] = \
+                            job_settings['scale_max_in_parallel']
+            else:
+                settings = job_settings
+        else:   # K8S
             settings = job_settings
 
         # build the call to submit the job

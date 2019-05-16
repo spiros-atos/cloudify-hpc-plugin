@@ -86,97 +86,97 @@ class K8s(WorkloadManager):
                     "'not supported. Torque support only batched jobs."}
 
         # Build single line command
-        torque_call = ''
+        k8s_call = ''
 
         # NOTE an uploaded script could also be interesting to execute
         if 'pre' in job_settings:
             for entry in job_settings['pre']:
-                torque_call += entry + '; '
+                k8s_call += entry + '; '
 
-#       ################### Torque settings ###################
-        # qsub command plus job name
-        torque_call += "qsub -V -N {}".format(shlex_quote(name))
+# #       ################### Torque settings ###################
+#         # qsub command plus job name
+#         k8s_call += "qsub -V -N {}".format(shlex_quote(name))
 
-        resources_request = ""
-        if 'nodes' in job_settings:
-            resources_request = "nodes={}".format(job_settings['nodes'])
+#         resources_request = ""
+#         if 'nodes' in job_settings:
+#             resources_request = "nodes={}".format(job_settings['nodes'])
 
-            # number of cores requested per node
-            if 'tasks_per_node' in job_settings:
-                resources_request += ':ppn={}'.format(
-                    job_settings['tasks_per_node'])
-        else:
-            if 'tasks_per_node' in job_settings:
-                logger.error(
-                    r"Specify 'tasks_per_node' while 'nodes' is not specified")
+#             # number of cores requested per node
+#             if 'tasks_per_node' in job_settings:
+#                 resources_request += ':ppn={}'.format(
+#                     job_settings['tasks_per_node'])
+#         else:
+#             if 'tasks_per_node' in job_settings:
+#                 logger.error(
+#                     r"Specify 'tasks_per_node' while 'nodes' is not specified")
 
-        if 'max_time' in job_settings:
-            if len(resources_request) > 0:
-                resources_request += ','
-            resources_request += 'walltime={}'.format(job_settings['max_time'])
+#         if 'max_time' in job_settings:
+#             if len(resources_request) > 0:
+#                 resources_request += ','
+#             resources_request += 'walltime={}'.format(job_settings['max_time'])
 
-        if len(resources_request) > 0:
-            torque_call += ' -l {}'.format(resources_request)
+#         if len(resources_request) > 0:
+#             k8s_call += ' -l {}'.format(resources_request)
 
-        # more precisely is it a destination [queue][@server]
-        if 'queue' in job_settings:
-            torque_call += " -q {}".format(shlex_quote(job_settings['queue']))
+#         # more precisely is it a destination [queue][@server]
+#         if 'queue' in job_settings:
+#             k8s_call += " -q {}".format(shlex_quote(job_settings['queue']))
 
-        if 'rerunnable' in job_settings:  # same to requeue in SLURM
-            torque_call += " -r {}".format(
-                'y' if job_settings['rerunnable'] else 'n')
+#         if 'rerunnable' in job_settings:  # same to requeue in SLURM
+#             k8s_call += " -r {}".format(
+#                 'y' if job_settings['rerunnable'] else 'n')
 
-        if 'work_dir' in job_settings:
-            torque_call += " -w {}".format(
-                shlex_quote(job_settings['work_dir']))
+#         if 'work_dir' in job_settings:
+#             k8s_call += " -w {}".format(
+#                 shlex_quote(job_settings['work_dir']))
 
-        additional_attributes = {}
-        if 'group_name' in job_settings:
-            additional_attributes["group_list"] = shlex_quote(
-                job_settings['group_name'])
+#         additional_attributes = {}
+#         if 'group_name' in job_settings:
+#             additional_attributes["group_list"] = shlex_quote(
+#                 job_settings['group_name'])
 
-        if len(additional_attributes) > 0:
-            torque_call += " -W {}".format(
-                ','.join("{0}={1}".format(k, v)
-                         for k, v in additional_attributes.iteritems()))
+#         if len(additional_attributes) > 0:
+#             k8s_call += " -W {}".format(
+#                 ','.join("{0}={1}".format(k, v)
+#                          for k, v in additional_attributes.iteritems()))
 
-        # if 'tasks' in job_settings:
-        #     torque_call += ' -n ' + str(job_settings['tasks'])
-#       #######################################################
+#         # if 'tasks' in job_settings:
+#         #     torque_call += ' -n ' + str(job_settings['tasks'])
+# #       #######################################################
 
-        response = {}
-        if 'scale' in job_settings and \
-                int(job_settings['scale']) > 1:
-            # set the max of parallel jobs
-            scale_max = job_settings['scale']
-            # set the job array
-            torque_call += ' -J 0-{}'.format(scale_max - 1)
-            if 'scale_max_in_parallel' in job_settings and \
-                    int(job_settings['scale_max_in_parallel']) > 0:
-                torque_call += '%{}'.format(
-                    job_settings['scale_max_in_parallel'])
-                scale_max = job_settings['scale_max_in_parallel']
-            # map the orchestrator variables after last sbatch
-            scale_env_mapping_call = \
-                "sed -i '/# DYNAMIC VARIABLES/a\\" \
-                "SCALE_INDEX=$PBS_ARRAYID\\n" \
-                "SCALE_COUNT={scale_count}\\n" \
-                "SCALE_MAX={scale_max}' {command}".format(
-                    scale_count=job_settings['scale'],
-                    scale_max=scale_max,
-                    command=job_settings['command'].split()[0])  # file only
-            response['scale_env_mapping_call'] = scale_env_mapping_call
+        # response = {}
+        # if 'scale' in job_settings and \
+        #         int(job_settings['scale']) > 1:
+        #     # set the max of parallel jobs
+        #     scale_max = job_settings['scale']
+        #     # set the job array
+        #     k8s_call += ' -J 0-{}'.format(scale_max - 1)
+        #     if 'scale_max_in_parallel' in job_settings and \
+        #             int(job_settings['scale_max_in_parallel']) > 0:
+        #         k8s_call += '%{}'.format(
+        #             job_settings['scale_max_in_parallel'])
+        #         scale_max = job_settings['scale_max_in_parallel']
+        #     # map the orchestrator variables after last sbatch
+        #     scale_env_mapping_call = \
+        #         "sed -i '/# DYNAMIC VARIABLES/a\\" \
+        #         "SCALE_INDEX=$PBS_ARRAYID\\n" \
+        #         "SCALE_COUNT={scale_count}\\n" \
+        #         "SCALE_MAX={scale_max}' {command}".format(
+        #             scale_count=job_settings['scale'],
+        #             scale_max=scale_max,
+        #             command=job_settings['command'].split()[0])  # file only
+        #     response['scale_env_mapping_call'] = scale_env_mapping_call
 
-        # add executable and arguments
-        torque_call += ' {}'.format(job_settings['command'])
+        # # add executable and arguments
+        # k8s_call += ' {}'.format(job_settings['command'])
 
-        # NOTE an uploaded script could also be interesting to execute
-        if 'post' in job_settings:
-            torque_call += '; '
-            for entry in job_settings['post']:
-                torque_call += entry + '; '
+        # # NOTE an uploaded script could also be interesting to execute
+        # if 'post' in job_settings:
+        #     k8s_call += '; '
+        #     for entry in job_settings['post']:
+        #         k8s_call += entry + '; '
 
-        response['call'] = torque_call
+        response['call'] = k8s_call
         return response
 
     def _build_job_cancellation_call(self, name, job_settings, logger):
