@@ -34,8 +34,6 @@ class JobRequester(object):
             """ Retrieves the status of every job"""
             states = {}
 
-	    pdb.set_trace()
-
             for host, settings in monitor_jobs.iteritems():
                 # Only get info when it is safe
                 if host in self._last_time:

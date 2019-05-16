@@ -212,14 +212,20 @@ class WorkloadManager(object):
 
         # submit the job
         call = response['call']
-        output, exit_code = ssh_client.execute_shell_command(
-            call,
-            env=context,
-            workdir=workdir,
-            wait_result=True)
+
+	if ssh_client:
+            output, exit_code = ssh_client.execute_shell_command(
+                call,
+	        env=context,
+                workdir=workdir,
+                wait_result=True)
+	else: 	# K8S
+	    os.chdir(workdir)
+	    exit_code = subprocess.call(call, shell=True)
+
         if exit_code is not 0:
             logger.error("Job submission '" + call + "' exited with code " +
-                         str(exit_code) + ":\n" + output)
+                     str(exit_code) + ":\n" + output)
             return False
         return True
 

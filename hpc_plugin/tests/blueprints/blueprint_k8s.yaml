@@ -79,7 +79,7 @@ node_templates:
         bootstrap: 'scripts/bootstrap_k8s_example.sh'
         revert: 'scripts/revert_k8s_example.sh'
       job_options:
-        type: 'SHELL'
+        type: 'K8S'
         command: "touch single_vm.test"
       publish:
 #      - dataset: { get_input: ckan_outputs_dataset }

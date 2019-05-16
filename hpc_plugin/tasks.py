@@ -540,7 +540,9 @@ def send_job(job_options, **kwargs):  # pylint: disable=W0613
                                      ctx.logger,
                                      workdir=workdir,
                                      context=context_vars)
-        client.close_connection()
+
+	if wm_type != 'K8S':
+	    client.close_connection()
     else:
         ctx.logger.warning('Instance ' + ctx.instance.id + ' simulated')
         is_submitted = True

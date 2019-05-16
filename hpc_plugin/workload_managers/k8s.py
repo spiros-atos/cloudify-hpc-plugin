@@ -1,3 +1,5 @@
+import pdb
+
 from hpc_plugin.ssh import SshClient
 from workload_manager import WorkloadManager
 from hpc_plugin.utilities import shlex_quote
@@ -72,6 +74,9 @@ class K8s(WorkloadManager):
         return script
 
     def _build_job_submission_call(self, name, job_settings, logger):
+
+	pdb.set_trace()
+
         # check input information correctness
         if not isinstance(job_settings, dict) or \
                 not isinstance(name, basestring):
@@ -81,9 +86,9 @@ class K8s(WorkloadManager):
             return {'error': "'type' and 'command' " +
                     "must be defined in job settings"}
 
-        if 'type' in job_settings and job_settings['type'] != 'SBATCH':
+        if 'type' in job_settings and job_settings['type'] != 'K8S':
             return {'error': "Job type '" + job_settings['type'] +
-                    "'not supported. Torque support only batched jobs."}
+                    "'not supported. Kubernetes supports only ...k8s jobs."}
 
         # Build single line command
         k8s_call = ''
@@ -144,7 +149,7 @@ class K8s(WorkloadManager):
 #         #     torque_call += ' -n ' + str(job_settings['tasks'])
 # #       #######################################################
 
-        # response = {}
+        response = {}
         # if 'scale' in job_settings and \
         #         int(job_settings['scale']) > 1:
         #     # set the max of parallel jobs
