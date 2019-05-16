@@ -3,5 +3,6 @@
 FILE="touch.script"
 
 if [ -f $FILE ]; then
-    rm $FILE
+    #rm $FILE
+    cp $FILE spiros.tmp
 fi

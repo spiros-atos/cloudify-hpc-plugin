@@ -5,14 +5,13 @@ FILE="touch.script"
 cat > $FILE <<- EOM
 #!/bin/bash -l
 
-#SBATCH -p $2
-#SBATCH -N 1
-#SBATCH -n 1
-#SBATCH --ntasks-per-node=1
-#SBATCH -t 00:01:00
+cd /home/linux/ATOSES_spiros/monitoring_jobs/cfy_launch
+ID=K8S_BB
+cfy blueprints upload -b \$ID job.yaml
+cfy deployments create -b \$ID
+cfy executions start -d \$ID install
 
-# DYNAMIC VARIABLES
 
-touch test_$1.test
+#touch test_$1.test
 
 EOM
