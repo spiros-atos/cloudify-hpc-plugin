@@ -515,11 +515,16 @@ def send_job(job_options, **kwargs):  # pylint: disable=W0613
     if not simulate:
         workdir = ctx.instance.runtime_properties['workdir']
         wm_type = ctx.instance.runtime_properties['workload_manager']
-        client = SshClient(ctx.instance.runtime_properties['credentials'])
+
+        if wm_type != 'K8S':
+            client = SshClient(ctx.instance.runtime_properties['credentials'])
+        else:
+            client = None
 
         wm = WorkloadManager.factory(wm_type)
         if not wm:
-            client.close_connection()
+            if wm_type != 'K8S':
+                client.close_connection()
             raise NonRecoverableError(
                 "Workload Manager '" +
                 wm_type +
