@@ -29,7 +29,7 @@ primary_hpc:
     wm_config: &id013
       country_tz: Europe/Madrid
       #workload_manager: SLURM
-      # workload_manager: TORQUE
+      #workload_manager: TORQUE
       workload_manager: K8S      
 
 hpc_wm_config: *id013
@@ -38,5 +38,6 @@ hpc_wm_credentials: *id008
 # job_prefix: mso
 job_prefix: euxd
 #monitor_entrypoint: 'http://80.158.7.249:30003/graph'
-monitor_entrypoint: 'https://prometheus.test.euxdat.eu/graph'
+#monitor_entrypoint: 'https://prometheus.test.euxdat.eu/graph'
+monitor_entrypoint: ''
 

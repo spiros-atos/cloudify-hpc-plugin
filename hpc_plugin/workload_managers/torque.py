@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import pdb
 
 
 from hpc_plugin.ssh import SshClient
@@ -88,6 +89,9 @@ class Torque(WorkloadManager):
         return script
 
     def _build_job_submission_call(self, name, job_settings, logger):
+
+	pdb.set_trace()
+
         # check input information correctness
         if not isinstance(job_settings, dict) or \
                 not isinstance(name, basestring):

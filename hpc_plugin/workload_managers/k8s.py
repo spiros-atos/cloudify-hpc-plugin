@@ -75,8 +75,6 @@ class K8s(WorkloadManager):
 
     def _build_job_submission_call(self, name, job_settings, logger):
 
-	pdb.set_trace()
-
         # check input information correctness
         if not isinstance(job_settings, dict) or \
                 not isinstance(name, basestring):
@@ -172,14 +170,14 @@ class K8s(WorkloadManager):
         #             command=job_settings['command'].split()[0])  # file only
         #     response['scale_env_mapping_call'] = scale_env_mapping_call
 
-        # # add executable and arguments
-        # k8s_call += ' {}'.format(job_settings['command'])
+        # add executable and arguments
+        k8s_call += ' {}'.format(job_settings['command'])
 
         # # NOTE an uploaded script could also be interesting to execute
         # if 'post' in job_settings:
         #     k8s_call += '; '
         #     for entry in job_settings['post']:
-        #         k8s_call += entry + '; '
+        #         k8s_call += entry + '; '	
 
         response['call'] = k8s_call
         return response
