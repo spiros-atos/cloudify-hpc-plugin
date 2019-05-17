@@ -80,7 +80,8 @@ node_templates:
         revert: 'scripts/revert_k8s_example.sh'
       job_options:
         type: 'K8S'
-        command: "touch single_vm.test"
+#        command: "touch single_vm.test"
+        command: "chmod +x touch.script; ./touch.script"
       publish:
 #      - dataset: { get_input: ckan_outputs_dataset }
         file_path: "$CURRENT_WORKDIR/single_vm.test"

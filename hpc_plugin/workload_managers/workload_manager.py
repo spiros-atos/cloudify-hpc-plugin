@@ -223,7 +223,10 @@ class WorkloadManager(object):
                 wait_result=True)
 	else: 	# K8S
 	    os.chdir(workdir)
+            output = ''
 	    exit_code = subprocess.call(call, shell=True)
+	    #output = check_output(['chmod', '+x', 'touch.script'])
+	    
 
         if exit_code is not 0:
             logger.error("Job submission '" + call + "' exited with code " +
