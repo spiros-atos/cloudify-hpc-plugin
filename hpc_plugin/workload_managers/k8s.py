@@ -213,9 +213,11 @@ class K8s(WorkloadManager):
         call = "echo {} | xargs -n 1 qselect -N".format(
             shlex_quote(' '.join(map(shlex_quote, job_names))))
 
-        logger.info('TORQUE.PY::_GET_STATES_DETAILED() L232')
+        logger.info('K8S.PY::_GET_STATES_DETAILED() L216')
         logger.info('call = ' + str(call))
 
+        pdb.set_trace()
+        
         client = SshClient(credentials)
 
         output, exit_code = client.execute_shell_command(
