@@ -210,36 +210,48 @@ class K8s(WorkloadManager):
         and uses several SSH commands.
         """
         # identify job ids
-        call = "echo {} | xargs -n 1 qselect -N".format(
-            shlex_quote(' '.join(map(shlex_quote, job_names))))
+        # call = "echo {} | xargs -n 1 qselect -N".format(
+        #     shlex_quote(' '.join(map(shlex_quote, job_names))))
+        call = "sudo -i kubectl get pods busybox"
 
         logger.info('K8S.PY::_GET_STATES_DETAILED() L216')
         logger.info('call = ' + str(call))
 
         pdb.set_trace()
-        
-        client = SshClient(credentials)
 
-        output, exit_code = client.execute_shell_command(
-            call,
-            workdir=workdir,
-            wait_result=True)
-        job_ids = Torque._parse_qselect(output)
-        if not job_ids:
-            return {}
+        # client = SshClient(credentials)
 
-        logger.info('job_ids = ' + str(job_ids))
+        # output, exit_code = client.execute_shell_command(
+        #     call,
+        #     workdir=workdir,
+        #     wait_result=True)
+        exit_code = subprocess.call(call, shell=True)
+
+        # job_ids = Torque._parse_qselect(output)
+        # if not job_ids:
+        #     return {}
+        _parse_kubectl(output)
+
+        # logger.info('job_ids = ' + str(job_ids))
 
         # get detailed information about jobs
-        call = "qstat -f {}".format(' '.join(map(str, job_ids)))
+        # call = "qstat -f {}".format(' '.join(map(str, job_ids)))
+        call = "sudo -i kubectl describe pods busybox"
 
         logger.info('call = ' + str(call))
 
-        output, exit_code = client.execute_shell_command(
-            call,
-            workdir=workdir,
-            wait_result=True)
-        client.close_connection()
+        # spiros: now need to see how Prometheus and K8S will be set up..
+        #   .. to see what details we need... for now, let's just do a ..
+        #   .. describe
+
+        exit_code = subprocess.call(call, shell=True)        
+
+        # output, exit_code = client.execute_shell_command(
+        #     call,
+        #     workdir=workdir,
+        #     wait_result=True)
+        # client.close_connection()
+
         try:
             job_states = Torque._parse_qstat_detailed(output)
             logger.info('job_states = ' + str(job_states))
