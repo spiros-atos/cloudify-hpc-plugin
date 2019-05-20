@@ -36,6 +36,9 @@ class JobRequester(object):
 
             for host, settings in monitor_jobs.iteritems():
                 # Only get info when it is safe
+	        if not host:
+		  continue
+
                 if host in self._last_time:
                     seconds_to_wait = settings['period'] - \
                         (time.time() - self._last_time[host])
