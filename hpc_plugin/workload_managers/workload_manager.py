@@ -185,8 +185,6 @@ class WorkloadManager(object):
         else:   # K8S
             settings = job_settings
 
-	pdb.set_trace()
-
         # build the call to submit the job
         response = self._build_job_submission_call(name,
                                                    settings,
