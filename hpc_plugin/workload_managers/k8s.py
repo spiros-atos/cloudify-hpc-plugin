@@ -253,7 +253,8 @@ class K8s(WorkloadManager):
         # client.close_connection()
 
         try:
-            job_states = Torque._parse_qstat_detailed(output)
+            # job_states = Torque._parse_qstat_detailed(output)
+            job_states = _parse_kubectl_detailed(output)
             logger.info('job_states = ' + str(job_states))
         except SyntaxError as e:
             logger.warning(
@@ -269,30 +270,41 @@ class K8s(WorkloadManager):
         return job_states
 
     @staticmethod
-    def _parse_qselect(qselect_output):
+    # def _parse_qselect(qselect_output):
+    #     """ Parse `qselect` output and returns
+    #     list of job ids without host names """
+    #     jobs = qselect_output.splitlines()
+    #     if not jobs or (len(jobs) == 1 and jobs[0] is ''):
+    #         return []
+    #     return [int(job.split('.')[0]) for job in jobs]
+    def _parse_kubectl(qselect_output):
         """ Parse `qselect` output and returns
         list of job ids without host names """
-        jobs = qselect_output.splitlines()
-        if not jobs or (len(jobs) == 1 and jobs[0] is ''):
-            return []
-        return [int(job.split('.')[0]) for job in jobs]
+        # jobs = qselect_output.splitlines()
+        # if not jobs or (len(jobs) == 1 and jobs[0] is ''):
+        #     return []
+        # return [int(job.split('.')[0]) for job in jobs]
+        return []
 
     @staticmethod
-    def _parse_qstat_detailed(qstat_output):
-        from StringIO import StringIO
+    def _parse_kubectl_detailed(qstat_output):
+        # from StringIO import StringIO
         jobs = {}
-        for job in Torque._tokenize_qstat_detailed(StringIO(qstat_output)):
-            # ignore job['Job_Id'], use identification by name
-            name = job.get('Job_Name', '')
-            state_code = job.get('job_state', None)
-            if name and state_code:
-                if state_code == 'C':
-                    exit_status = int(job.get('exit_status', 0))
-                    state = Torque._job_exit_status.get(
-                        exit_status, "FAILED")  # unknown failure by default
-                else:
-                    state = Torque._job_states[state_code]
-            jobs[name] = state
+        # for job in Torque._tokenize_qstat_detailed(StringIO(qstat_output)):
+        #     # ignore job['Job_Id'], use identification by name
+        #     name = job.get('Job_Name', '')
+        #     state_code = job.get('job_state', None)
+        #     if name and state_code:
+        #         if state_code == 'C':
+        #             exit_status = int(job.get('exit_status', 0))
+        #             state = Torque._job_exit_status.get(
+        #                 exit_status, "FAILED")  # unknown failure by default
+        #         else:
+        #             state = Torque._job_states[state_code]
+        #     jobs[name] = state
+
+        call = 'kubectl get pods busybox -o jsonpath="Name: {.metadata.name} Status: {.status.phase}"'
+        output = subprocess.check_output(call, shell=True)
         return jobs
 
     @staticmethod
