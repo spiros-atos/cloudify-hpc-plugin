@@ -1,4 +1,5 @@
 import pdb
+import subprocess
 
 from hpc_plugin.ssh import SshClient
 from workload_manager import WorkloadManager
@@ -225,12 +226,14 @@ class K8s(WorkloadManager):
         #     call,
         #     workdir=workdir,
         #     wait_result=True)
+#        exit_code = subprocess.call(call, shell=True)
+	output = ''
         exit_code = subprocess.call(call, shell=True)
 
         # job_ids = Torque._parse_qselect(output)
         # if not job_ids:
         #     return {}
-        _parse_kubectl(output)
+        K8s._parse_kubectl(output)
 
         # logger.info('job_ids = ' + str(job_ids))
 
@@ -254,7 +257,7 @@ class K8s(WorkloadManager):
 
         try:
             # job_states = Torque._parse_qstat_detailed(output)
-            job_states = _parse_kubectl_detailed(output)
+            job_states = K8s._parse_kubectl_detailed(output)
             logger.info('job_states = ' + str(job_states))
         except SyntaxError as e:
             logger.warning(
@@ -303,8 +306,9 @@ class K8s(WorkloadManager):
         #             state = Torque._job_states[state_code]
         #     jobs[name] = state
 
-        call = 'kubectl get pods busybox -o jsonpath="Name: {.metadata.name} Status: {.status.phase}"'
+        call = 'sudo -i kubectl get pods busybox -o jsonpath="Name: {.metadata.name} Status: {.status.phase}"'
         output = subprocess.check_output(call, shell=True)
+	jobs['busybox'] = "COMPLETED"
         return jobs
 
     @staticmethod

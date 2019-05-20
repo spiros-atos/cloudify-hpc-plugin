@@ -356,9 +356,12 @@ class Monitor(object):
         self.logger.info('WORKFLOWS.PY::MONITOR::UPDATE_STATUS() L354')
         states = self.jobs_requester.request(monitor_jobs, self.logger)
 
+	if states['busybox'] == 'COMPLETED':
+            #self.job_instances_map[inst_name].set_status('COMPLETED')
+	    self.job_instances_map[self.job_instances_map.keys()[0]].set_status('COMPLETED')
         # finally set job status
-        for inst_name, state in states.iteritems():
-            self.job_instances_map[inst_name].set_status(state)
+#        for inst_name, state in states.iteritems():
+#            self.job_instances_map[inst_name].set_status(state)
 
         # We wait to slow down the loop
         sys.stdout.flush()  # necessary to output work properly with sleep

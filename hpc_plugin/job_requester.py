@@ -16,6 +16,7 @@
 """ Holds the functions that requests jobs information """
 
 import pdb
+import subprocess
 
 import time
 import requests
@@ -36,8 +37,8 @@ class JobRequester(object):
 
             for host, settings in monitor_jobs.iteritems():
                 # Only get info when it is safe
-	        if not host:
-		  continue
+#	        if not host:
+#		  continue
 
                 if host in self._last_time:
                     seconds_to_wait = settings['period'] - \
