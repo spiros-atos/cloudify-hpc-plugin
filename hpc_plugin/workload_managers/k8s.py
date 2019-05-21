@@ -215,7 +215,6 @@ class K8s(WorkloadManager):
         #     shlex_quote(' '.join(map(shlex_quote, job_names))))
         call = "sudo -i kubectl get pods busybox"
 
-        logger.info('K8S.PY::_GET_STATES_DETAILED() L216')
         logger.info('call = ' + str(call))
 
         pdb.set_trace()

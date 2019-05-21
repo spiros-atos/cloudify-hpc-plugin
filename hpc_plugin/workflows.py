@@ -353,7 +353,6 @@ class Monitor(object):
             return
 
         # then look for the status of the instances through its name
-        self.logger.info('WORKFLOWS.PY::MONITOR::UPDATE_STATUS() L354')
         states = self.jobs_requester.request(monitor_jobs, self.logger)
 
 	if 'busybox' in states:
@@ -392,7 +391,6 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
 
     root_nodes, job_instances_map = build_graph(ctx.nodes)
     monitor = Monitor(job_instances_map, ctx.logger)
-    ctx.logger.info('WORKFLOWS.PY::RUN_JOBS() L390')
 
     # Execution of first job instances
     tasks_list = []
@@ -411,9 +409,6 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
         new_exec_nodes = []
         for node_name, exec_node in monitor.get_executions_iterator():
             if exec_node.check_status():
-
-                if exec_node.status != prev_status:
-                    ctx.logger.info('SPIROS TEMP exec_node.status = ' + str(exec_node.status))
                 prev_status = exec_node.status
 
                 if exec_node.completed:
