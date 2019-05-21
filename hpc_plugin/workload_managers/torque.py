@@ -90,8 +90,6 @@ class Torque(WorkloadManager):
 
     def _build_job_submission_call(self, name, job_settings, logger):
 
-	pdb.set_trace()
-
         # check input information correctness
         if not isinstance(job_settings, dict) or \
                 not isinstance(name, basestring):

@@ -98,9 +98,6 @@ def configure_execution(
                 "' not supported.")
 
     	if wm_type != 'K8S':
-
-	    pdb.set_trace()
-
             if 'credentials' in ctx.instance.runtime_properties:
                 credentials = ctx.instance.runtime_properties['credentials']
             try:
