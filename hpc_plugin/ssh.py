@@ -103,6 +103,7 @@ class SshClient(object):
 
         while True:
             try:
+                ctx.logger.info('SSH.PY::__INIT__() L106')
                 self._client.connect(
                     self._host,
                     port=self._port,
