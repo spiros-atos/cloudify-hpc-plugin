@@ -52,7 +52,7 @@ class SshClient(object):
     """Represents a ssh client"""
     _client = None
 
-    def __init__(self, credentials):
+    def __init__(self, credentials, logger):
         # Build a tunnel if necessary
         self._tunnel = None
         self._host = credentials['host']
@@ -103,7 +103,7 @@ class SshClient(object):
 
         while True:
             try:
-                ctx.logger.info('SSH.PY::__INIT__() L106')
+                logger.info('SSH.PY::__INIT__() L106')
                 self._client.connect(
                     self._host,
                     port=self._port,
