@@ -29,8 +29,8 @@ primary_hpc:
     wm_config: &id013
       country_tz: Europe/Madrid
       #workload_manager: SLURM
-      #workload_manager: TORQUE
-      workload_manager: K8S      
+      workload_manager: TORQUE
+      #workload_manager: K8S      
 
 hpc_wm_config: *id013
 hpc_wm_credentials: *id008
