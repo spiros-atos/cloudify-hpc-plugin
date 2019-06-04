@@ -20,6 +20,6 @@ hpc_wm_config: *id013
 hpc_wm_credentials: *id008
 
 job_prefix: euxd
-monitor_entrypoint: 'https://prometheus.test.euxdat.eu/graph'
-#monitor_entrypoint: ''
+#monitor_entrypoint: 'https://prometheus.test.euxdat.eu/graph'
+monitor_entrypoint: ''
 
