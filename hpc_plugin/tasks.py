@@ -475,6 +475,8 @@ def send_job(job_options, **kwargs):  # pylint: disable=W0613
     """ Sends a job to the workload manager """
     simulate = ctx.instance.runtime_properties['simulate']
 
+    pdb.set_trace()
+
     name = kwargs['name']
     is_singularity = 'hpc.nodes.SingularityJob' in ctx.node.\
         type_hierarchy
