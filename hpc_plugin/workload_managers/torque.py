@@ -113,7 +113,8 @@ class Torque(WorkloadManager):
 
 #       ################### Torque settings ###################
         # qsub command plus job name
-        torque_call += "qsub -V -N {}".format(shlex_quote(name))
+#        torque_call += "qsub -V -N {}".format(shlex_quote(name))
+        torque_call += "qsub -N {}".format(shlex_quote(name))
 
         resources_request = ""
         if 'nodes' in job_settings:
