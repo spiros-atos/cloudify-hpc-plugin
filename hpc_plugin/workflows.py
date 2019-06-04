@@ -390,50 +390,50 @@ def run_jobs(**kwargs):  # pylint: disable=W0613
     """ Workflow to execute long running batch operations """
 
     root_nodes, job_instances_map = build_graph(ctx.nodes)
-    monitor = Monitor(job_instances_map, ctx.logger)
+    # monitor = Monitor(job_instances_map, ctx.logger)
 
     # Execution of first job instances
     tasks_list = []
     for root in root_nodes:
         tasks_list += root.queue_all_instances()
-        monitor.add_node(root)
+        # monitor.add_node(root)
     wait_tasks_to_finish(tasks_list)
 
     prev_status = str()
 
     # Monitoring and next executions loop
-    while monitor.is_something_executing() and not api.has_cancel_request():
-        # Monitor the infrastructure
-        monitor.update_status()
-        exec_nodes_finished = []
-        new_exec_nodes = []
-        for node_name, exec_node in monitor.get_executions_iterator():
-            if exec_node.check_status():
-                prev_status = exec_node.status
+    # while monitor.is_something_executing() and not api.has_cancel_request():
+    #     # Monitor the infrastructure
+    #     monitor.update_status()
+    #     exec_nodes_finished = []
+    #     new_exec_nodes = []
+    #     for node_name, exec_node in monitor.get_executions_iterator():
+    #         if exec_node.check_status():
+    #             prev_status = exec_node.status
 
-                if exec_node.completed:
-                    exec_node.clean_all_instances()
-                    exec_nodes_finished.append(node_name)
-                    new_nodes_to_execute = exec_node.get_children_ready()
-                    for new_node in new_nodes_to_execute:
-                        new_exec_nodes.append(new_node)
-            else:
-                # Something went wrong in the node, cancel execution
-                cancel_all(monitor.get_executions_iterator())
-                return
+    #             if exec_node.completed:
+    #                 exec_node.clean_all_instances()
+    #                 exec_nodes_finished.append(node_name)
+    #                 new_nodes_to_execute = exec_node.get_children_ready()
+    #                 for new_node in new_nodes_to_execute:
+    #                     new_exec_nodes.append(new_node)
+    #         else:
+    #             # Something went wrong in the node, cancel execution
+    #             cancel_all(monitor.get_executions_iterator())
+    #             return
 
-        # remove finished nodes
-        for node_name in exec_nodes_finished:
-            monitor.finish_node(node_name)
-        # perform new executions
-        tasks_list = []
-        for new_node in new_exec_nodes:
-            tasks_list += new_node.queue_all_instances()
-            monitor.add_node(new_node)
-        wait_tasks_to_finish(tasks_list)
+    #     # remove finished nodes
+    #     for node_name in exec_nodes_finished:
+    #         monitor.finish_node(node_name)
+    #     # perform new executions
+    #     tasks_list = []
+    #     for new_node in new_exec_nodes:
+    #         tasks_list += new_node.queue_all_instances()
+    #         monitor.add_node(new_node)
+    #     wait_tasks_to_finish(tasks_list)
 
-    if monitor.is_something_executing():
-        cancel_all(monitor.get_executions_iterator())
+    # if monitor.is_something_executing():
+    #     cancel_all(monitor.get_executions_iterator())
 
     ctx.logger.info(
         "------------------Workflow Finished-----------------------")
