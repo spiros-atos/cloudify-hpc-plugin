@@ -442,6 +442,8 @@ def deploy_job(script,
                skip_cleanup):  # pylint: disable=W0613
     """ Exec a deployment job script that receives SSH credentials as input """
 
+    ctx.logger.info('TASKS.PY::DEPLOY_JOB L445')
+
     wm = WorkloadManager.factory(wm_type)
     if not wm:
         raise NonRecoverableError(
